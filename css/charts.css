@@ -1,0 +1,28 @@
+/* =========================================================
+   PaperFlow ERP — Chart Styles (Canvas-based)
+   ========================================================= */
+.chart-container {
+  position: relative;
+  width: 100%;
+}
+.chart-container canvas {
+  display: block;
+  width: 100% !important;
+}
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-label-small);
+  color: var(--color-secondary-text);
+}
+.chart-legend__dot {
+  width: 8px; height: 8px;
+  flex-shrink: 0;
+}

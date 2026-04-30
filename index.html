@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PaperFlow ERP — Newspaper Distribution & Accounting Platform</title>
+  <meta name="description" content="PaperFlow ERP: A professional Multi-tenant Newspaper Distribution & Accounting ERP for Super Admins, Agents, Hawkers, and Customers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Splash/Login Screen -->
+    <div id="screen-login" class="screen active">
+      <div class="login-bg">
+        <div class="login-grid-overlay"></div>
+        <div class="login-card">
+          <div class="login-logo">
+            <span class="logo-mark">▶</span>
+            <span class="logo-text">PAPERFLOW<span class="logo-accent">_ERP</span></span>
+          </div>
+          <p class="login-tagline">NEWSPAPER DISTRIBUTION & ACCOUNTING SYSTEM v2.4.0</p>
+          <div class="login-status-bar">
+            <span class="status-dot status-dot--green"></span>
+            <span>SaaS_ENGINE: ONLINE &nbsp;|&nbsp; NODES: 128 &nbsp;|&nbsp; VER: 2.4.0</span>
+          </div>
+          <div class="login-role-select">
+            <p class="login-section-label">SELECT_ACCESS_LEVEL</p>
+            <div class="role-grid">
+              <button class="role-btn active" data-role="superadmin" id="role-superadmin">
+                <span class="material-icons-round role-icon">shield</span>
+                <span class="role-label">SUPER_ADMIN</span>
+                <span class="role-desc">System Root</span>
+              </button>
+              <button class="role-btn" data-role="agent" id="role-agent">
+                <span class="material-icons-round role-icon">store</span>
+                <span class="role-label">AGENT</span>
+                <span class="role-desc">Agency Owner</span>
+              </button>
+              <button class="role-btn" data-role="hawker" id="role-hawker">
+                <span class="material-icons-round role-icon">directions_bike</span>
+                <span class="role-label">HAWKER</span>
+                <span class="role-desc">Delivery Partner</span>
+              </button>
+              <button class="role-btn" data-role="customer" id="role-customer">
+                <span class="material-icons-round role-icon">person</span>
+                <span class="role-label">CUSTOMER</span>
+                <span class="role-desc">Subscriber</span>
+              </button>
+            </div>
+          </div>
+          <div class="login-form">
+            <div class="input-group">
+              <span class="material-icons-round input-icon">alternate_email</span>
+              <input type="text" class="form-input" id="login-email" placeholder="ENTER_CREDENTIALS" value="admin@paperflow.io" />
+            </div>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">lock</span>
+              <input type="password" class="form-input" id="login-pass" placeholder="ACCESS_KEY" value="••••••••" />
+            </div>
+            <button class="btn btn--primary btn--lg btn--full" id="btn-login">
+              <span class="material-icons-round">arrow_forward</span>
+              INITIALIZE_SESSION
+            </button>
+          </div>
+          <p class="login-footer">SECURE_ENCRYPTION_ACTIVE // RSA-4096 &nbsp;|&nbsp; OTP_AUTH_ENABLED</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App Shell -->
+    <div id="screen-app" class="screen hidden">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <span class="logo-mark">▶</span>
+            <span class="logo-text">PF<span class="logo-accent">_ERP</span></span>
+          </div>
+          <button class="sidebar-toggle" id="sidebar-toggle">
+            <span class="material-icons-round">menu</span>
+          </button>
+        </div>
+
+        <div class="sidebar-role-badge" id="sidebar-role-badge">
+          <span class="material-icons-round">shield</span>
+          <span id="sidebar-role-label">SUPER_ADMIN</span>
+        </div>
+
+        <!-- Super Admin Nav -->
+        <nav class="sidebar-nav" id="nav-superadmin">
+          <a href="#" class="nav-item active" data-page="superadmin-dashboard">
+            <span class="material-icons-round">dashboard</span>
+            <span class="nav-label">DASHBOARD</span>
+          </a>
+          <a href="#" class="nav-item" data-page="agent-onboarding">
+            <span class="material-icons-round">person_add</span>
+            <span class="nav-label">ONBOARD_AGENT</span>
+          </a>
+          <a href="#" class="nav-item" data-page="agent-list">
+            <span class="material-icons-round">group</span>
+            <span class="nav-label">AGENT_REGISTRY</span>
+          </a>
+          <a href="#" class="nav-item" data-page="billing">
+            <span class="material-icons-round">payments</span>
+            <span class="nav-label">SAAS_BILLING</span>
+          </a>
+          <a href="#" class="nav-item" data-page="analytics">
+            <span class="material-icons-round">analytics</span>
+            <span class="nav-label">ANALYTICS</span>
+          </a>
+          <a href="#" class="nav-item" data-page="support">
+            <span class="material-icons-round">support_agent</span>
+            <span class="nav-label">SUPPORT_TICKETS</span>
+          </a>
+        </nav>
+
+        <!-- Agent Nav -->
+        <nav class="sidebar-nav hidden" id="nav-agent">
+          <a href="#" class="nav-item active" data-page="agent-dashboard">
+            <span class="material-icons-round">dashboard</span>
+            <span class="nav-label">DASHBOARD</span>
+          </a>
+          <a href="#" class="nav-item" data-page="hawker-management">
+            <span class="material-icons-round">directions_bike</span>
+            <span class="nav-label">HAWKER_MGMT</span>
+          </a>
+          <a href="#" class="nav-item" data-page="customers">
+            <span class="material-icons-round">people</span>
+            <span class="nav-label">CUSTOMERS</span>
+          </a>
+          <a href="#" class="nav-item" data-page="inventory">
+            <span class="material-icons-round">inventory_2</span>
+            <span class="nav-label">INVENTORY</span>
+          </a>
+          <a href="#" class="nav-item" data-page="reports">
+            <span class="material-icons-round">bar_chart</span>
+            <span class="nav-label">REPORTS</span>
+          </a>
+          <a href="#" class="nav-item" data-page="billing-agent">
+            <span class="material-icons-round">receipt_long</span>
+            <span class="nav-label">BILLING</span>
+          </a>
+        </nav>
+
+        <!-- Hawker Nav -->
+        <nav class="sidebar-nav hidden" id="nav-hawker">
+          <a href="#" class="nav-item active" data-page="hawker-home">
+            <span class="material-icons-round">home</span>
+            <span class="nav-label">HOME</span>
+          </a>
+          <a href="#" class="nav-item" data-page="hawker-delivery">
+            <span class="material-icons-round">local_shipping</span>
+            <span class="nav-label">DELIVERY_LIST</span>
+          </a>
+          <a href="#" class="nav-item" data-page="hawker-collection">
+            <span class="material-icons-round">payments</span>
+            <span class="nav-label">COLLECTION</span>
+          </a>
+        </nav>
+
+        <!-- Customer Nav -->
+        <nav class="sidebar-nav hidden" id="nav-customer">
+          <a href="#" class="nav-item active" data-page="customer-portal">
+            <span class="material-icons-round">home</span>
+            <span class="nav-label">MY_PORTAL</span>
+          </a>
+          <a href="#" class="nav-item" data-page="customer-bills">
+            <span class="material-icons-round">receipt</span>
+            <span class="nav-label">BILLS</span>
+          </a>
+          <a href="#" class="nav-item" data-page="customer-calendar">
+            <span class="material-icons-round">calendar_month</span>
+            <span class="nav-label">CALENDAR</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="system-status">
+            <span class="status-dot status-dot--green"></span>
+            <span class="status-text">SaaS_ENGINE: ONLINE</span>
+          </div>
+          <button class="nav-item nav-item--logout" id="btn-logout">
+            <span class="material-icons-round">logout</span>
+            <span class="nav-label">TERMINATE_SESSION</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content" id="main-content">
+        <!-- Pages are injected here by JS -->
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/pages/superadmin.js"></script>
+  <script src="js/pages/agent.js"></script>
+  <script src="js/pages/hawker.js"></script>
+  <script src="js/pages/customer.js"></script>
+  <script src="js/pages/onboarding.js"></script>
+  <script src="js/pages/reports.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
