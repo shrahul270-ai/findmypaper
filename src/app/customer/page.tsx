@@ -53,14 +53,14 @@ export default function CustomerDashboard() {
                   </div>
                   <h2 className="text-4xl font-black mb-2 tracking-tight">THE_TIMES_OF_INDIA</h2>
                   <p className="text-slate-400 font-medium mb-8 text-sm">Active since Jan 2024 • Daily Morning Delivery (6:00 AM)</p>
-                  <div className="flex gap-4">
-                    <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
-                      <p className="text-[9px] font-bold text-slate-500 uppercase mb-1">PLAN_TYPE</p>
-                      <p className="text-sm font-black tracking-widest">PLATINUM_PRO</p>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="bg-white px-5 py-3 rounded-2xl shadow-xl shadow-black/20 group hover:scale-105 transition-all">
+                      <p className="text-[9px] font-black text-slate-400 uppercase mb-1 tracking-widest">PLAN_TYPE</p>
+                      <p className="text-sm font-black tracking-widest text-slate-900 uppercase">PLATINUM_PRO</p>
                     </div>
-                    <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
-                      <p className="text-[9px] font-bold text-slate-500 uppercase mb-1">MONTHLY_PRICE</p>
-                      <p className="text-sm font-black tracking-widest text-indigo-400">₹180 / MO</p>
+                    <div className="bg-indigo-500 px-5 py-3 rounded-2xl shadow-xl shadow-indigo-900/40 group hover:scale-105 transition-all">
+                      <p className="text-[9px] font-black text-indigo-200 uppercase mb-1 tracking-widest">MONTHLY_PRICE</p>
+                      <p className="text-sm font-black tracking-widest text-white">₹180 / MO</p>
                     </div>
                   </div>
                 </div>
