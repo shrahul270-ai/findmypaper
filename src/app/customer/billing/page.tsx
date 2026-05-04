@@ -1,18 +1,29 @@
 "use client";
 
 import React, { useRef, useState } from 'react';
-import { CreditCard, Upload, History, AlertCircle, CheckCircle, Smartphone, Download, MapPin, ReceiptText, ImageIcon, FileCheck } from 'lucide-react';
+import { CreditCard, Upload, History, AlertCircle, CheckCircle, Smartphone, Download, MapPin, ReceiptText, ImageIcon, FileCheck, Loader2 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 
 export default function CustomerBilling() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const transactions = [
     { id: 'T1001', date: '01 May 2026', amount: 450, status: 'APPROVED', mode: 'ONLINE' },
     { id: 'T1002', date: '01 Apr 2026', amount: 420, status: 'APPROVED', mode: 'CASH' }
   ];
+
+  const handleDownloadPDF = () => {
+    setDownloading(true);
+    // Simulating PDF generation and download
+    setTimeout(() => {
+      setDownloading(false);
+      alert("Success! Your Invoice for MAY 2026 has been downloaded as PDF.");
+      // In a real app, we would use window.print() or a library like jsPDF
+    }, 2000);
+  };
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -47,8 +58,13 @@ export default function CustomerBilling() {
             <p className="text-indigo-600 text-[10px] font-bold tracking-[0.2em] uppercase">MEMBER_PORTAL: BILLING</p>
             <h1 className="text-2xl font-bold tracking-tight text-slate-800">MY_ACCOUNT_LEDGER</h1>
           </div>
-          <button className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm">
-            <Download size={14} /> DOWNLOAD_INVOICE_PDF
+          <button 
+            onClick={handleDownloadPDF}
+            disabled={downloading}
+            className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.1em] hover:bg-indigo-600 transition-all shadow-lg shadow-indigo-100 disabled:opacity-50"
+          >
+            {downloading ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+            {downloading ? "GENERATING..." : "DOWNLOAD_INVOICE_PDF"}
           </button>
         </header>
 
@@ -95,15 +111,7 @@ export default function CustomerBilling() {
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1">PAYMENT_SCREENSHOT</label>
-                  
-                  {/* Hidden File Input */}
-                  <input 
-                    type="file" 
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    accept="image/*"
-                    className="hidden"
-                  />
+                  <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
 
                   <div 
                     onClick={handleUploadClick}
@@ -113,7 +121,6 @@ export default function CustomerBilling() {
                       <div className="animate-fade-in">
                         <FileCheck className="mx-auto text-emerald-500 mb-4" size={56} />
                         <p className="text-lg font-black text-slate-800 uppercase tracking-tight">{selectedFile.name}</p>
-                        <p className="text-xs text-emerald-600 font-bold mt-1">Image Selected Successfully!</p>
                       </div>
                     ) : (
                       <>
