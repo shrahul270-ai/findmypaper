@@ -153,17 +153,6 @@ export default function CustomerDashboard() {
               </div>
             </div>
 
-            {/* Quick Actions */}
-            <div className="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-xl shadow-indigo-100 overflow-hidden relative group">
-              <div className="relative z-10">
-                <h3 className="text-lg font-black uppercase mb-2 tracking-tighter italic">EXPAND_CATALOG</h3>
-                <p className="text-[10px] font-bold text-indigo-200 uppercase tracking-widest mb-6">Discover more papers & books</p>
-                <button className="flex items-center gap-2 bg-white text-indigo-600 px-6 py-3 rounded-xl font-black text-[10px] tracking-widest uppercase hover:scale-105 transition-all">
-                  VISIT_MARKETPLACE <ArrowRight size={14} />
-                </button>
-              </div>
-              <BookOpen className="absolute -right-8 -bottom-8 w-40 h-40 opacity-10 -rotate-12 group-hover:rotate-0 transition-transform duration-500" />
-            </div>
 
           </div>
         </div>
