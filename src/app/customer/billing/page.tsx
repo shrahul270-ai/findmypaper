@@ -43,13 +43,13 @@ export default function CustomerBilling() {
             <div className="card border-slate-100 shadow-sm">
               <div className="flex items-center gap-2 mb-4 text-slate-700">
                 <Smartphone size={18} className="text-indigo-600" />
-                <h3 className="text-xs font-bold tracking-widest uppercase">PAY_VIA_UPI</h3>
+                <h3 className="text-xs font-bold tracking-widest uppercase">PAY_VIA_UPI_QR</h3>
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl text-center border border-slate-100 border-dashed">
-                <div className="w-40 h-40 bg-white border border-slate-200 mx-auto rounded-xl flex items-center justify-center mb-3">
+                <div className="w-44 h-44 bg-white border border-slate-200 mx-auto rounded-xl flex items-center justify-center mb-3">
                   <span className="text-[10px] text-slate-400 font-mono italic">[QR_SCAN_CODE]</span>
                 </div>
-                <p className="text-xs font-bold text-slate-600">UPI ID: agency@okaxis</p>
+                <p className="text-xs font-bold text-slate-600">Scan to pay & upload proof</p>
               </div>
             </div>
           </div>
@@ -62,24 +62,23 @@ export default function CustomerBilling() {
                 <h2 className="text-sm font-bold tracking-widest uppercase">UPLOAD_PAYMENT_PROOF</h2>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">UTR_TRANSACTION_ID</label>
-                  <input type="text" placeholder="12-digit UPI Reference" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-600 outline-none" />
-                </div>
+              <div className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">PAID_AMOUNT (₹)</label>
-                  <input type="number" placeholder="450" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-600 outline-none" />
+                  <input type="number" placeholder="450" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-xl font-black text-indigo-600 focus:ring-2 focus:ring-indigo-600 outline-none" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1">PAYMENT_SCREENSHOT</label>
+                  <div className="border-2 border-dashed border-slate-200 rounded-[2rem] p-16 text-center hover:border-indigo-400 transition-all cursor-pointer group bg-slate-50/30">
+                    <Upload className="mx-auto text-slate-300 group-hover:text-indigo-500 mb-4 transition-all" size={56} />
+                    <p className="text-lg font-black text-slate-800">Tap to upload Screenshot</p>
+                    <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-widest">Only image files (JPG, PNG) are accepted</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="border-2 border-dashed border-slate-100 rounded-[1.5rem] p-10 text-center hover:border-indigo-400 transition-all cursor-pointer group bg-slate-50/50">
-                <Upload className="mx-auto text-slate-300 group-hover:text-indigo-500 mb-4 transition-all" size={40} />
-                <p className="text-sm font-bold text-slate-600">Tap to upload your payment screenshot</p>
-                <p className="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-widest">Max file size: 5MB (JPG, PNG)</p>
-              </div>
-
-              <button className="btn-primary w-full mt-8 flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 h-14 uppercase tracking-widest">
+              <button className="btn-primary w-full mt-10 flex items-center justify-center gap-3 shadow-2xl shadow-indigo-200 h-16 uppercase tracking-[0.2em] text-sm">
                 SUBMIT_PROOF_FOR_VERIFICATION
               </button>
             </div>
@@ -87,7 +86,7 @@ export default function CustomerBilling() {
             <div className="card">
               <div className="flex items-center gap-2 mb-6">
                 <History size={20} className="text-slate-400" />
-                <h2 className="text-sm font-bold tracking-widest uppercase">RECENT_HISTORY</h2>
+                <h2 className="text-sm font-bold tracking-widest uppercase">TRANSACTION_HISTORY</h2>
               </div>
               <div className="space-y-3">
                 {transactions.map((t) => (
@@ -103,7 +102,7 @@ export default function CustomerBilling() {
                         </p>
                       </div>
                     </div>
-                    <p className="font-black text-slate-800">₹{t.amount}</p>
+                    <p className="font-black text-slate-800 text-lg">₹{t.amount}</p>
                   </div>
                 ))}
               </div>
