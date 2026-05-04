@@ -2,7 +2,11 @@
 
 import React, { useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
-import { User, Newspaper, Clock, MapPin, CheckCircle2, Phone, Building2, Bike, MessageSquare, Send, X, BookOpen, Calendar, ArrowRight, ShieldCheck, Wallet, AlertCircle, Smartphone, SmartphoneIcon } from 'lucide-react';
+import { 
+  User, Newspaper, Clock, MapPin, CheckCircle2, Phone, Building2, 
+  Bike, MessageSquare, Send, X, BookOpen, Calendar, ArrowRight, 
+  ShieldCheck, Wallet, AlertCircle, Smartphone, SmartphoneIcon, CreditCard 
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlobalAlert, TopAdBar } from '@/components/ui/Promotions';
 
@@ -30,7 +34,7 @@ export default function CustomerDashboard() {
       <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
         <Sidebar role="CUSTOMER" />
         
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto h-[calc(100vh-52px)]">
           <header className="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div>
               <p className="text-indigo-600 text-[10px] font-black tracking-widest uppercase mb-1">DASHBOARD_HOME</p>
@@ -51,10 +55,7 @@ export default function CustomerDashboard() {
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            {/* Main Area with Original Design Widgets */}
             <div className="lg:col-span-8 space-y-8">
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Active Service Widget */}
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group">
@@ -100,7 +101,7 @@ export default function CustomerDashboard() {
                 </div>
               </div>
 
-              {/* Delivery Log - Original Style */}
+              {/* Delivery Log */}
               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                 <div className="flex justify-between items-center mb-8">
                   <div className="flex items-center gap-3">
@@ -116,10 +117,8 @@ export default function CustomerDashboard() {
                   ))}
                 </div>
               </div>
-
             </div>
 
-            {/* Sidebar Area */}
             <div className="lg:col-span-4 space-y-6">
               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                 <h2 className="text-[10px] font-black tracking-widest uppercase text-slate-400 mb-8 flex items-center gap-2">
@@ -150,12 +149,10 @@ export default function CustomerDashboard() {
                 REQUEST_CHUTTI
               </button>
             </div>
-
           </div>
         </main>
       </div>
 
-      {/* Pause Modal remains same */}
       {showPauseModal && (
         <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
           <div className="bg-white max-w-md w-full rounded-[2.5rem] p-10 shadow-2xl relative animate-scale-in">
