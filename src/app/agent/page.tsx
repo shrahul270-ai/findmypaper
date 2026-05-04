@@ -7,14 +7,14 @@ import {
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
-import { GlobalAlert, AdSlider } from '@/components/ui/Promotions';
+import { GlobalAlert, TopAdBar } from '@/components/ui/Promotions';
 
 export default function AgentDashboard() {
   const [activeTab, setActiveTab] = useState('HAWKERS');
   
   const ads = [
-    { tag: 'DEPOT_PROMO', title: 'UPGRADE TO E-BIKE FOR HAWKERS', desc: 'Zero downpayment finance scheme available for all PaperFlow agents.' },
-    { tag: 'GOVT_AD', title: 'SOCIAL SECURITY FOR HAWKERS', desc: 'Enroll your distributors in the new government pension scheme today.' }
+    { tag: 'DEPOT_PROMO', title: 'UPGRADE TO E-BIKE FOR HAWKERS' },
+    { tag: 'GOVT_AD', title: 'SOCIAL SECURITY FOR HAWKERS ENROLLMENT' }
   ];
 
   const hawkers = [
@@ -25,13 +25,11 @@ export default function AgentDashboard() {
   return (
     <div className="flex min-h-screen bg-slate-50 flex-col md:flex-row">
       <GlobalAlert message="SYSTEM_UPDATE: VERIFY ALL SUNDAY SETTLEMENTS BY 6 PM TODAY. NEW_AD_SLOTS_AVAILABLE." />
+      <TopAdBar ads={ads} />
+      
       <Sidebar role="AGENT" />
       
       <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        <div className="mb-8">
-           <AdSlider ads={ads} />
-        </div>
-
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
           <div>
             <p className="text-indigo-600 text-[10px] font-bold tracking-[0.2em] uppercase leading-none mb-2">AGENT_TERMINAL: ACTIVE</p>

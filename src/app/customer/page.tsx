@@ -4,35 +4,37 @@ import React, { useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import { User, Newspaper, Clock, MapPin, CheckCircle2, Phone, Building2, Bike, MessageSquare, Send, X, BookOpen, Calendar, ArrowRight, ShieldCheck, Wallet, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GlobalAlert, AdSlider } from '@/components/ui/Promotions';
+import { GlobalAlert, TopAdBar } from '@/components/ui/Promotions';
 
 export default function CustomerDashboard() {
   const [showPauseModal, setShowPauseModal] = useState(false);
 
   const ads = [
-    { tag: 'SCHOOL_AD', title: 'ST. STEPHENS ADMISSIONS OPEN', desc: 'Flat 20% discount on first-month fee for PaperFlow users.' },
-    { tag: 'GOVT_NOTICE', title: 'WATER CONSERVATION MISSION 2026', desc: 'Save every drop for a better future. A government initiative.' },
-    { tag: 'HEALTH_PROMO', title: 'FREE HEALTH CHECKUP AT METRO', desc: 'Complimentary checkup for senior citizens this Sunday.' }
+    { tag: 'SCHOOL_AD', title: 'ST. STEPHENS ADMISSIONS OPEN - 20% OFF' },
+    { tag: 'GOVT_NOTICE', title: 'WATER CONSERVATION MISSION 2026' },
+    { tag: 'HEALTH', title: 'FREE HEALTH CHECKUP AT METRO THIS SUNDAY' }
+  ];
+
+  const activeServices = [
+    { name: 'The Times of India', type: 'NEWSPAPER', price: 180 },
+    { name: 'Pratiyogita Darpan', type: 'MAGAZINE', price: 95 },
   ];
 
   return (
     <div className="flex min-h-screen bg-slate-50 flex-col md:flex-row">
       <GlobalAlert message="ADMIN_BROADCAST: NEW_YEAR_OFFER! GET 10% OFF ON ALL MAGAZINES. CONTACT YOUR AGENT NOW." />
+      <TopAdBar ads={ads} />
+      
       <Sidebar role="CUSTOMER" />
       
       <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        {/* Sleek Ad Slider at Top */}
-        <div className="mb-8">
-           <AdSlider ads={ads} />
-        </div>
-
-        <header className="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <header className="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 animate-fade-in">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="bg-indigo-600 text-white text-[8px] font-black px-2 py-0.5 rounded tracking-widest uppercase">PRO_MEMBER</span>
-              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest leading-none">CUST-7701 • RAHUL_SHARMA</p>
+              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">CUST-7701 • RAHUL_SHARMA</p>
             </div>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-slate-900 italic uppercase leading-none">MY_STATION</h1>
+            <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-slate-900 italic uppercase">MY_STATION</h1>
           </div>
           
           <div className="flex items-center gap-4 bg-white p-3 md:p-4 rounded-[1.5rem] md:rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 w-full lg:w-auto">
@@ -61,32 +63,23 @@ export default function CustomerDashboard() {
                   <ShieldCheck size={14} />
                   <span className="text-[9px] font-black tracking-[0.2em] uppercase">ACTIVE_SERVICE</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-black mb-4 md:mb-6 tracking-tight uppercase leading-none italic">THE_TIMES_OF_INDIA</h2>
+                <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight uppercase italic leading-none">THE_TIMES_OF_INDIA</h2>
+                <div className="space-y-3 mb-10">
+                  {activeServices.map((service, idx) => (
+                    <div key={idx} className="flex items-center gap-3 text-slate-400 font-bold text-xs md:text-sm">
+                      <CheckCircle2 className="text-emerald-500" size={16} />
+                      <span>{service.type}: <span className="text-white">{service.name}</span></span>
+                    </div>
+                  ))}
+                </div>
                 <div className="flex flex-col md:flex-row gap-6 md:items-end justify-between">
-                  <div className="flex gap-3 md:gap-4">
+                  <div className="flex gap-4">
                     <div className="bg-white px-5 py-3 md:px-6 md:py-4 rounded-[1.2rem] md:rounded-[1.5rem] shadow-xl shadow-black/20">
                       <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase mb-1 tracking-widest">MONTHLY_TOTAL</p>
                       <p className="text-lg md:text-xl font-black text-slate-900 tracking-tighter">₹275.00</p>
                     </div>
                   </div>
                   <button onClick={() => setShowPauseModal(true)} className="bg-white text-slate-900 px-8 py-4 rounded-2xl font-black text-xs tracking-widest uppercase hover:bg-indigo-600 hover:text-white transition-all text-center">MANAGE_LEAVE</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-4 space-y-6 md:space-y-8 animate-slide-up delay-200">
-            <div className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm">
-              <h2 className="text-[10px] font-black tracking-widest uppercase text-slate-400 mb-6 flex items-center gap-2">
-                <div className="w-4 h-0.5 bg-slate-200"></div> SERVICE_SQUAD
-              </h2>
-              <div className="space-y-4">
-                <div className="bg-slate-50 p-4 rounded-2xl flex items-center gap-4">
-                  <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white"><Building2 size={18} /></div>
-                  <div>
-                    <p className="text-[8px] font-black text-slate-400 uppercase">AGENT</p>
-                    <p className="text-xs font-black text-slate-800">Sita Ram Agency</p>
-                  </div>
                 </div>
               </div>
             </div>

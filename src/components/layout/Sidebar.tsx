@@ -39,9 +39,10 @@ const navItems: Record<Role, any[]> = {
     { name: 'Attendance', icon: MapPin, href: '/hawker/attendance' },
   ],
   CUSTOMER: [
-    { name: 'Subscription', icon: User, href: '/customer' },
-    { name: 'Newspapers & Books', icon: Store, href: '/customer/marketplace' },
+    { name: 'Subscription', icon: Newspaper, href: '/customer' },
+    { name: 'Newspapers & Books', icon: BookOpen, href: '/customer/marketplace' },
     { name: 'Bills & Payments', icon: CreditCard, href: '/customer/billing' },
+    { name: 'My Profile', icon: User, href: '/customer/profile' },
   ],
 };
 
