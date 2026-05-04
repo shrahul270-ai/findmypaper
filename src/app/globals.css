@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Slate & Indigo Professional Palette */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary: #4f46e5; /* Indigo */
+  --primary-glow: rgba(79, 70, 229, 0.1);
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --divider: #e2e8f0;
+  --muted: #64748b;
+}
+
+[data-theme="dark"] {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --primary: #818cf8;
+  --primary-glow: rgba(129, 140, 248, 0.15);
+  --surface: #1e293b;
+  --surface-2: #334155;
+  --divider: #475569;
+  --muted: #94a3b8;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[var(--primary)] text-white font-semibold py-2.5 px-5 rounded-lg transition-all hover:opacity-90 active:scale-95 shadow-sm;
+  }
+  
+  .card {
+    @apply bg-[var(--surface)] border border-[var(--divider)] rounded-xl p-6 shadow-[0_1px_3px_0_rgba(0,0,0,0.1)];
+  }
+  
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-2.5 text-[var(--muted)] font-medium rounded-lg transition-all hover:bg-[var(--surface-2)] hover:text-[var(--foreground)];
+  }
+  
+  .nav-item-active {
+    @apply text-[var(--primary)] bg-[var(--primary-glow)] font-semibold;
+  }
+
+  .status-badge {
+    @apply px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 10px; }

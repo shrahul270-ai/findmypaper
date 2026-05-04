@@ -1,0 +1,158 @@
+// prisma/schema.prisma (Updated)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  VERIFIER
+  AGENT
+  HAWKER
+  CUSTOMER
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  role          Role
+  phone         String?
+  avatarUrl     String?
+  createdAt     DateTime  @default(now())
+  
+  agentProfile    Agent?
+  hawkerProfile   Hawker?
+  customerProfile Customer?
+  verifiedPayments Payment[] @relation("VerifiedBy")
+}
+
+model Area {
+  id      Int      @id @default(autoincrement())
+  name    String
+  pincode String?
+  city    String
+  
+  agents  Agent[]
+  hawkers Hawker[]
+}
+
+model Newspaper {
+  id        Int      @id @default(autoincrement())
+  name      String   // e.g., "The Times of India", "Dainik Jagran"
+  code      String   @unique // e.g., "TOI", "DJ"
+  basePrice Float
+  
+  assignments DailyAssignment[]
+}
+
+model Agent {
+  userId        String   @id
+  user          User     @relation(fields: [userId], references: [id])
+  areaId        Int
+  area          Area     @relation(fields: [areaId], references: [id])
+  walletBalance Float    @default(0.0)
+  isActive      Boolean  @default(true)
+  
+  hawkers       Hawker[]
+  customers     Customer[]
+  payments      Payment[]
+  assignments   DailyAssignment[]
+}
+
+model Hawker {
+  userId        String   @id
+  user          User     @relation(fields: [userId], references: [id])
+  agentId       String
+  agent         Agent    @relation(fields: [agentId], references: [userId])
+  areaId        Int
+  area          Area     @relation(fields: [areaId], references: [id])
+  
+  customers     Customer[]
+  attendance    Attendance[]
+  assignments   DailyAssignment[]
+}
+
+model DailyAssignment {
+  id          Int       @id @default(autoincrement())
+  date        DateTime  @default(now())
+  agentId     String
+  agent       Agent     @relation(fields: [agentId], references: [userId])
+  hawkerId    String
+  hawker      Hawker    @relation(fields: [hawkerId], references: [userId])
+  newspaperId Int
+  newspaper   Newspaper @relation(fields: [newspaperId], references: [id])
+  quantity    Int       @default(0)
+  isCollected Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Customer {
+  userId             String             @id
+  user               User               @relation(fields: [userId], references: [id])
+  agentId            String
+  agent              Agent              @relation(fields: [agentId], references: [userId])
+  hawkerId           String
+  hawker             Hawker             @relation(fields: [hawkerId], references: [userId])
+  subscriptionStatus SubscriptionStatus @default(ACTIVE)
+  billingCycle       Int                @default(30)
+  currentBalance     Float              @default(0.0)
+  
+  payments           Payment[]
+  bills              Bill[]
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  customerId    String
+  customer      Customer      @relation(fields: [customerId], references: [userId])
+  agentId       String
+  agent         Agent         @relation(fields: [agentId], references: [userId])
+  amount        Float
+  screenshotUrl String?
+  status        PaymentStatus @default(PENDING)
+  verifiedById  String?
+  verifier      User?         @relation("VerifiedBy", fields: [verifiedById], references: [id])
+  createdAt     DateTime      @default(now())
+}
+
+model Bill {
+  id          Int      @id @default(autoincrement())
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [userId])
+  amount      Float
+  periodStart DateTime
+  periodEnd   DateTime
+  pdfUrl      String?
+  isPaid      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  hawkerId  String
+  hawker    Hawker   @relation(fields: [hawkerId], references: [userId])
+  selfieUrl String
+  latitude  Float
+  longitude Float
+  timestamp DateTime @default(now())
+}

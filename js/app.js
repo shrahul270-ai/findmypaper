@@ -5,6 +5,7 @@
 const PF = {
   currentRole: 'superadmin',
   currentPage: null,
+  theme: localStorage.getItem('PF_THEME') || 'dark',
   
   // Toast Notification System
   showToast(message, type = 'neutral') {
@@ -157,6 +158,17 @@ const PF = {
     const loginScreen = document.getElementById('screen-login');
     loginScreen.classList.remove('hidden');
     loginScreen.classList.add('active');
+  },
+
+  toggleTheme() {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', this.theme);
+    localStorage.setItem('PF_THEME', this.theme);
+    
+    const icon = document.getElementById('theme-toggle').querySelector('.material-icons-round');
+    icon.textContent = this.theme === 'dark' ? 'dark_mode' : 'light_mode';
+    
+    this.showToast(`System theme: ${this.theme.toUpperCase()}`, 'neutral');
   }
 };
 
@@ -180,10 +192,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Login button
-  document.getElementById('btn-login').addEventListener('click', () => {
+  // Request OTP button
+  document.getElementById('btn-request-otp').addEventListener('click', () => {
+    const email = document.getElementById('login-email').value;
+    if (!email) {
+      PF.showToast('Please enter credentials', 'error');
+      return;
+    }
+    
+    // Simulate OTP generation
+    PF.showToast('OTP sent to registered node: 123456', 'success');
+    
+    document.getElementById('login-stage-1').classList.add('hidden');
+    document.getElementById('login-stage-2').classList.remove('hidden');
+  });
+
+  // Back to login button
+  document.getElementById('btn-back-to-login').addEventListener('click', () => {
+    document.getElementById('login-stage-2').classList.add('hidden');
+    document.getElementById('login-stage-1').classList.remove('hidden');
+  });
+
+  // Verify OTP and Login
+  document.getElementById('btn-login-verify').addEventListener('click', () => {
+    const otp = document.getElementById('login-otp').value;
     const activeRole = document.querySelector('.role-btn.active').dataset.role;
-    PF.login(activeRole);
+    
+    if (otp === '123456') {
+      PF.login(activeRole);
+      // Reset stages for next time
+      document.getElementById('login-stage-2').classList.add('hidden');
+      document.getElementById('login-stage-1').classList.remove('hidden');
+      document.getElementById('login-otp').value = '';
+    } else {
+      PF.showToast('INVALID_ACCESS_KEY: Authentication Failed', 'error');
+    }
   });
 
   // Logout button
@@ -202,5 +245,15 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       PF.navigate(e.currentTarget.dataset.page);
     });
+  });
+
+  // Initial Theme Load
+  document.documentElement.setAttribute('data-theme', PF.theme);
+  const themeIcon = document.getElementById('theme-toggle').querySelector('.material-icons-round');
+  themeIcon.textContent = PF.theme === 'dark' ? 'dark_mode' : 'light_mode';
+
+  // Theme Toggle Listener
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    PF.toggleTheme();
   });
 });

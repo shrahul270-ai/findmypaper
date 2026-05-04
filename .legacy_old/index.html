@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="css/animations.css" />
 </head>
 <body>
+  <button class="theme-toggle" id="theme-toggle" title="Toggle System Theme">
+    <span class="material-icons-round">dark_mode</span>
+  </button>
   <div id="app">
     <!-- Splash/Login Screen -->
     <div id="screen-login" class="screen active">
@@ -56,7 +59,7 @@
               </button>
             </div>
           </div>
-          <div class="login-form">
+          <div class="login-form" id="login-stage-1">
             <div class="input-group">
               <span class="material-icons-round input-icon">alternate_email</span>
               <input type="text" class="form-input" id="login-email" placeholder="ENTER_CREDENTIALS" value="admin@paperflow.io" />
@@ -65,9 +68,24 @@
               <span class="material-icons-round input-icon">lock</span>
               <input type="password" class="form-input" id="login-pass" placeholder="ACCESS_KEY" value="••••••••" />
             </div>
-            <button class="btn btn--primary btn--lg btn--full" id="btn-login">
-              <span class="material-icons-round">arrow_forward</span>
-              INITIALIZE_SESSION
+            <button class="btn btn--primary btn--lg btn--full" id="btn-request-otp">
+              <span class="material-icons-round">vpn_key</span>
+              REQUEST_ACCESS_OTP
+            </button>
+          </div>
+
+          <div class="login-form hidden" id="login-stage-2">
+            <p class="login-section-label" style="text-align:center;margin-bottom:var(--space-sm)">ENTER_6_DIGIT_OTP</p>
+            <div class="input-group">
+              <span class="material-icons-round input-icon">dialpad</span>
+              <input type="text" class="form-input" id="login-otp" placeholder="••••••" maxlength="6" style="text-align:center;letter-spacing:0.5em;padding-left:var(--space-md)" />
+            </div>
+            <button class="btn btn--primary btn--lg btn--full" id="btn-login-verify">
+              <span class="material-icons-round">verified_user</span>
+              VERIFY_&_INITIALIZE
+            </button>
+            <button class="btn btn--ghost btn--sm btn--full" id="btn-back-to-login" style="margin-top:var(--space-xs)">
+              BACK_TO_CREDENTIALS
             </button>
           </div>
           <p class="login-footer">SECURE_ENCRYPTION_ACTIVE // RSA-4096 &nbsp;|&nbsp; OTP_AUTH_ENABLED</p>
