@@ -36,31 +36,29 @@ export const AdSlider = ({ ads }: { ads: Array<{ title: string, desc: string, ta
   }, [ads.length]);
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 to-indigo-900 rounded-[2rem] h-32 md:h-40 text-white shadow-2xl group">
+    <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 to-indigo-900 rounded-[2rem] h-32 md:h-36 text-white shadow-2xl group max-w-2xl mx-auto border border-white/5">
       {ads.map((ad, idx) => (
         <div 
           key={idx}
           className={cn(
-            "absolute inset-0 p-6 md:p-8 flex flex-col justify-center transition-all duration-1000",
+            "absolute inset-0 p-6 flex flex-col justify-center transition-all duration-1000",
             idx === current ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full"
           )}
         >
-          <div className="relative z-10">
-            <span className="bg-indigo-600 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest mb-2 inline-block">AD_PROMOTED: {ad.tag}</span>
-            <h3 className="text-xl md:text-2xl font-black italic uppercase tracking-tighter leading-none mb-1">{ad.title}</h3>
-            <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase max-w-[80%] line-clamp-1">{ad.desc}</p>
+          <div className="relative z-10 text-center md:text-left">
+            <span className="bg-indigo-600 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest mb-2 inline-block">AD: {ad.tag}</span>
+            <h3 className="text-lg md:text-xl font-black italic uppercase tracking-tighter leading-none mb-1">{ad.title}</h3>
+            <p className="text-[9px] font-bold text-slate-400 uppercase max-w-[90%] mx-auto md:mx-0 line-clamp-1">{ad.desc}</p>
           </div>
         </div>
       ))}
       
       {/* Dots */}
-      <div className="absolute bottom-4 left-8 flex gap-1.5 z-20">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
         {ads.map((_, idx) => (
           <div key={idx} className={cn("h-1 rounded-full transition-all", idx === current ? "w-6 bg-indigo-500" : "w-2 bg-white/20")}></div>
         ))}
       </div>
-
-      <div className="absolute -right-8 -bottom-8 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl"></div>
     </div>
   );
 };
