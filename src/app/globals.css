@@ -1,12 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
-  /* Slate & Indigo Professional Palette */
   --background: #f8fafc;
   --foreground: #0f172a;
-  --primary: #4f46e5; /* Indigo */
+  --primary: #4f46e5;
   --primary-glow: rgba(79, 70, 229, 0.1);
   --surface: #ffffff;
   --surface-2: #f1f5f9;
@@ -25,36 +22,54 @@
   --muted: #94a3b8;
 }
 
+@theme {
+  --color-primary: var(--primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
-@layer components {
-  .btn-primary {
-    @apply bg-[var(--primary)] text-white font-semibold py-2.5 px-5 rounded-lg transition-all hover:opacity-90 active:scale-95 shadow-sm;
-  }
-  
-  .card {
-    @apply bg-[var(--surface)] border border-[var(--divider)] rounded-xl p-6 shadow-[0_1px_3px_0_rgba(0,0,0,0.1)];
-  }
-  
-  .nav-item {
-    @apply flex items-center gap-3 px-4 py-2.5 text-[var(--muted)] font-medium rounded-lg transition-all hover:bg-[var(--surface-2)] hover:text-[var(--foreground)];
-  }
-  
-  .nav-item-active {
-    @apply text-[var(--primary)] bg-[var(--primary-glow)] font-semibold;
-  }
-
-  .status-badge {
-    @apply px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border;
-  }
+/* Common UI Helper Classes */
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 10px; }
+.card {
+  background-color: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  color: var(--muted);
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.nav-item:hover {
+  background-color: var(--surface-2);
+  color: var(--foreground);
+}
+
+.nav-item-active {
+  color: var(--primary);
+  background-color: var(--primary-glow);
+  font-weight: 600;
+}

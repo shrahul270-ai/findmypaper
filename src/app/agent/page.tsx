@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import StatCard from '@/components/ui/StatCard';
+import { cn } from '@/lib/utils';
 
 export default function AgentDashboard() {
   const hawkers = [

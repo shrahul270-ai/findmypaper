@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, DollarSign, Wallet, FileText, AlertCircle, ArrowUpRight } from 'lucide-react';
+import { Users, DollarSign, Wallet, FileText, AlertCircle, ArrowUpRight, Store } from 'lucide-react';
 import StatCard from '@/components/ui/StatCard';
 import Sidebar from '@/components/layout/Sidebar';
 
