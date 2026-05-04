@@ -1,120 +1,121 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Sidebar from '@/components/layout/Sidebar';
-import { Settings, Grid, Bookmark, User, Newspaper, Calendar, Wallet, CheckCircle2, MoreHorizontal, Camera, History } from 'lucide-react';
+import { 
+  User, Mail, Phone, MapPin, Shield, Bell, 
+  Settings, LogOut, Edit3, UserCircle2, 
+  ChevronRight, CheckCircle2, Calendar
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { GlobalAlert, TopAdBar } from '@/components/ui/Promotions';
 
-export default function CustomerProfile() {
-  const [activeTab, setActiveTab] = useState('POSTS'); // POSTS, SAVED, TAGGED
-
-  const subscriptions = [
-    { id: 1, name: 'Dainik Jagran', image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=300&h=300&fit=crop', price: 180 },
-    { id: 2, name: 'Economic Times', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=300&h=300&fit=crop', price: 250 },
-    { id: 3, name: 'India Today', image: 'https://images.unsplash.com/photo-1585829365294-bb752404bb23?q=80&w=300&h=300&fit=crop', price: 60 },
+export default function ProfilePage() {
+  const ads = [
+    { tag: 'SECURITY_TIPS', title: 'ALWAYS VERIFY YOUR HAWKER ID BEFORE CASH PAYMENTS' }
   ];
 
   return (
-    <div className="flex min-h-screen bg-white md:bg-slate-50">
-      <Sidebar role="CUSTOMER" />
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <GlobalAlert message="PROFILE_SECURITY: YOUR ACCOUNT IS PROTECTED BY ENCRYPTION. UPDATE YOUR ADDRESS FOR BETTER DELIVERY." />
+      <TopAdBar ads={ads} />
       
-      <main className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto md:p-8">
-          
-          {/* Instagram-style Header */}
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 p-6 md:p-0 mb-12 border-b md:border-none border-slate-100">
-            <div className="relative group">
-              <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border-2 border-slate-100 p-1 flex items-center justify-center bg-gradient-to-tr from-amber-400 via-fuchsia-500 to-indigo-600">
-                <div className="w-full h-full rounded-full bg-slate-200 overflow-hidden border-2 border-white flex items-center justify-center text-slate-400">
-                  <User size={64} />
-                </div>
-              </div>
-              <button className="absolute bottom-1 right-1 bg-white border border-slate-200 p-1.5 rounded-full shadow-lg text-indigo-600 hover:scale-110 transition-all">
-                <Camera size={16} />
-              </button>
-            </div>
+      <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
+        <Sidebar role="CUSTOMER" />
+        
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto h-[calc(100vh-52px)]">
+          <header className="mb-10">
+            <p className="text-indigo-600 text-[10px] font-black tracking-widest uppercase mb-1">ACCOUNT_SETTINGS</p>
+            <h1 className="text-3xl font-black text-slate-900 italic uppercase tracking-tighter">MY_PROFILE</h1>
+          </header>
 
-            <div className="flex-1 space-y-6 w-full text-center md:text-left">
-              <div className="flex flex-col md:flex-row items-center gap-4">
-                <h1 className="text-2xl font-light text-slate-900 tracking-tight">rahul_sharma_77</h1>
-                <div className="flex gap-2">
-                  <button className="bg-slate-900 text-white px-5 py-1.5 rounded-lg text-sm font-bold shadow-md hover:bg-slate-800 transition-all">Edit Profile</button>
-                  <button className="bg-slate-100 text-slate-900 px-5 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-200 transition-all">View Archive</button>
-                  <button className="p-1.5 text-slate-600"><Settings size={20} /></button>
-                </div>
-              </div>
-
-              <div className="flex justify-center md:justify-start gap-8 md:gap-12 py-4 md:py-0 border-y md:border-none border-slate-100">
-                <div className="text-center md:text-left"><span className="font-bold text-slate-900">03</span> <span className="text-slate-500 font-medium text-sm">Services</span></div>
-                <div className="text-center md:text-left"><span className="font-bold text-slate-900">₹450</span> <span className="text-slate-500 font-medium text-sm">Advance</span></div>
-                <div className="text-center md:text-left"><span className="font-bold text-slate-900">124</span> <span className="text-slate-500 font-medium text-sm">Deliveries</span></div>
-              </div>
-
-              <div className="space-y-1">
-                <p className="font-bold text-slate-900 text-sm">Rahul Sharma</p>
-                <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                  📍 Rohini Sector 9, Delhi • Premium Member <br />
-                  Digital News & Magazine Enthusiast 📖✨ <br />
-                  <span className="text-indigo-600 font-bold">#findmypaper #morningread</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Highlights Section */}
-          <div className="flex gap-6 overflow-x-auto pb-8 px-6 md:px-0 scrollbar-hide">
-             {[
-               { icon: <Wallet size={20} />, label: 'Wallet' },
-               { icon: <History size={20} />, label: 'History' },
-               { icon: <CheckCircle2 size={20} />, label: 'Verified' },
-               { icon: <Newspaper size={20} />, label: 'Daily' },
-             ].map((h, i) => (
-               <div key={i} className="flex flex-col items-center gap-2 shrink-0">
-                 <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all cursor-pointer">
-                   {h.icon}
-                 </div>
-                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{h.label}</span>
+          <div className="max-w-4xl space-y-8">
+            
+            {/* Simple User Info Card */}
+            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-8">
+               <div className="w-32 h-32 bg-indigo-50 rounded-[2.5rem] flex items-center justify-center text-indigo-600 shrink-0 border-4 border-white shadow-xl">
+                  <UserCircle2 size={64} />
                </div>
-             ))}
-          </div>
+               <div className="flex-1 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <h2 className="text-2xl font-black text-slate-900 uppercase italic">Rahul Sharma</h2>
+                    <span className="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-[8px] font-black uppercase">VERIFIED_CUST</span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-400 mb-6 uppercase tracking-widest">Customer ID: CUST-7701 • Member since May 2024</p>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                     <button className="bg-slate-900 text-white px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-indigo-600 transition-all">
+                        <Edit3 size={14} /> EDIT_DETAILS
+                     </button>
+                     <button className="bg-slate-50 text-slate-400 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 hover:text-rose-600 transition-all">
+                        LOGOUT
+                     </button>
+                  </div>
+               </div>
+            </div>
 
-          {/* Tabs Selection */}
-          <div className="flex justify-center gap-16 border-t border-slate-200">
-            <button 
-              onClick={() => setActiveTab('POSTS')}
-              className={cn(
-                "flex items-center gap-2 py-4 border-t text-[10px] font-black tracking-widest uppercase transition-all",
-                activeTab === 'POSTS' ? "border-slate-900 text-slate-900" : "border-transparent text-slate-400"
-              )}
-            >
-              <Grid size={12} /> ACTIVE_SERVICES
-            </button>
-            <button 
-              onClick={() => setActiveTab('SAVED')}
-              className={cn(
-                "flex items-center gap-2 py-4 border-t text-[10px] font-black tracking-widest uppercase transition-all",
-                activeTab === 'SAVED' ? "border-slate-900 text-slate-900" : "border-transparent text-slate-400"
-              )}
-            >
-              <Bookmark size={12} /> PENDING_ORDERS
-            </button>
-          </div>
+            {/* Account Details List */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <User size={14} /> CONTACT_INFORMATION
+                  </h3>
+                  <div className="space-y-4">
+                     <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase">Phone</span>
+                        <span className="text-xs font-black text-slate-800">+91 98765 43210</span>
+                     </div>
+                     <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase">Email</span>
+                        <span className="text-xs font-black text-slate-800">rahul@example.com</span>
+                     </div>
+                  </div>
+               </div>
 
-          {/* Grid View */}
-          <div className="grid grid-cols-3 gap-1 md:gap-8 p-1 md:p-0 mb-20 animate-fade-in">
-            {subscriptions.map((sub) => (
-              <div key={sub.id} className="relative aspect-square group overflow-hidden bg-slate-100">
-                <img src={sub.image} alt={sub.name} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-80 group-hover:opacity-100" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex flex-col items-center justify-center text-white p-4 text-center">
-                  <p className="text-[10px] font-black tracking-widest uppercase mb-1">{sub.name}</p>
-                  <p className="text-xl font-black italic tracking-tighter">₹{sub.price}/mo</p>
-                </div>
-              </div>
-            ))}
-          </div>
+               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <MapPin size={14} /> DELIVERY_ADDRESS
+                  </h3>
+                  <div className="p-4 bg-slate-50 rounded-2xl min-h-[100px]">
+                     <p className="text-xs font-black text-slate-800 leading-relaxed uppercase">
+                        Flat No. 402, Block C,<br />
+                        Sunshine Apartments, Rohini Sector 4,<br />
+                        New Delhi - 110085
+                     </p>
+                  </div>
+               </div>
+            </div>
 
-        </div>
-      </main>
+            {/* Quick Stats/Settings */}
+            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">ACCOUNT_PREFERENCES</h3>
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-5 bg-slate-50 rounded-2xl flex items-center justify-between hover:bg-indigo-50 transition-all cursor-pointer group">
+                     <div className="flex items-center gap-3">
+                        <Bell size={18} className="text-slate-400 group-hover:text-indigo-600" />
+                        <span className="text-[10px] font-black uppercase">Notifications</span>
+                     </div>
+                     <ChevronRight size={14} className="text-slate-300" />
+                  </div>
+                  <div className="p-5 bg-slate-50 rounded-2xl flex items-center justify-between hover:bg-indigo-50 transition-all cursor-pointer group">
+                     <div className="flex items-center gap-3">
+                        <Shield size={18} className="text-slate-400 group-hover:text-indigo-600" />
+                        <span className="text-[10px] font-black uppercase">Security</span>
+                     </div>
+                     <ChevronRight size={14} className="text-slate-300" />
+                  </div>
+                  <div className="p-5 bg-slate-50 rounded-2xl flex items-center justify-between hover:bg-indigo-50 transition-all cursor-pointer group">
+                     <div className="flex items-center gap-3">
+                        <Settings size={18} className="text-slate-400 group-hover:text-indigo-600" />
+                        <span className="text-[10px] font-black uppercase">Preferences</span>
+                     </div>
+                     <ChevronRight size={14} className="text-slate-300" />
+                  </div>
+               </div>
+            </div>
+
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
