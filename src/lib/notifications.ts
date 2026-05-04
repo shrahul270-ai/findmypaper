@@ -1,5 +1,18 @@
 export const WhatsAppService = {
   /**
+   * Send OTP for Login/Signup
+   */
+  async sendOTP(phone: string, otp: string) {
+    const message = `*PAPERFLOW_ERP: SECURITY_CODE*\n\n` +
+                    `Your OTP for PaperFlow access is: *${otp}*.\n\n` +
+                    `Do not share this code with anyone. Valid for 5 minutes.\n\n` +
+                    `_PaperFlow ERP System Security_`;
+
+    console.log(`[WhatsApp API] Sending OTP to ${phone}: \n${message}`);
+    // Real implementation: axios.post('API_URL', { phone, message, ... })
+  },
+
+  /**
    * Send Bill Generation Alert
    */
   async sendBillAlert(customerName: string, phone: string, amount: number, period: string) {
@@ -7,13 +20,10 @@ export const WhatsAppService = {
                     `Hello ${customerName},\n` +
                     `Your bill for ${period} has been generated.\n\n` +
                     `Total Amount: *₹${amount}*\n` +
-                    `Due Date: 10th of this month.\n\n` +
-                    `Please login to your portal to pay and upload screenshot.\n` +
                     `Link: http://paperflow.io/customer/billing\n\n` +
                     `_Generated via PaperFlow SaaS_`;
 
     console.log(`[WhatsApp API] Sending to ${phone}: \n${message}`);
-    // Real implementation would call Twilio/Wati API here
   },
 
   /**
@@ -22,21 +32,9 @@ export const WhatsAppService = {
   async sendPaymentApproval(customerName: string, phone: string, amount: number) {
     const message = `*PAPERFLOW_ERP: PAYMENT_VERIFIED*\n\n` +
                     `Dear ${customerName},\n` +
-                    `Your payment of *₹${amount}* has been successfully verified by our system.\n\n` +
-                    `Your ledger has been updated. Thank you for your business!\n\n` +
+                    `Your payment of *₹${amount}* has been successfully verified.\n\n` +
                     `_PaperFlow ERP: Reliable & Transparent_`;
 
     console.log(`[WhatsApp API] Sending to ${phone}: \n${message}`);
-  },
-
-  /**
-   * Send Attendance Alert to Agent
-   */
-  async sendAttendanceAlert(agentPhone: string, hawkerName: string) {
-    const message = `*PAPERFLOW_ERP: HAWKER_CHECK_IN*\n\n` +
-                    `Hawker *${hawkerName}* has marked attendance and is ready for dispatch.\n\n` +
-                    `Check dashboard for location details.`;
-
-    console.log(`[WhatsApp API] Sending to ${agentPhone}: \n${message}`);
   }
 };
