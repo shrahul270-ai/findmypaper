@@ -40,6 +40,7 @@ const navItems: Record<Role, any[]> = {
   ],
   CUSTOMER: [
     { name: 'Subscription', icon: User, href: '/customer' },
+    { name: 'Newspapers & Books', icon: Store, href: '/customer/marketplace' },
     { name: 'Bills & Payments', icon: CreditCard, href: '/customer/billing' },
   ],
 };
