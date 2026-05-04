@@ -1,14 +1,41 @@
 "use client";
 
-import React from 'react';
-import { CreditCard, Upload, History, AlertCircle, CheckCircle, Smartphone, Download, MapPin, ReceiptText } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { CreditCard, Upload, History, AlertCircle, CheckCircle, Smartphone, Download, MapPin, ReceiptText, ImageIcon, FileCheck } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 
 export default function CustomerBilling() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+
   const transactions = [
     { id: 'T1001', date: '01 May 2026', amount: 450, status: 'APPROVED', mode: 'ONLINE' },
     { id: 'T1002', date: '01 Apr 2026', amount: 420, status: 'APPROVED', mode: 'CASH' }
   ];
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedFile) return alert("Please select a screenshot first!");
+    
+    setUploading(true);
+    setTimeout(() => {
+      setUploading(false);
+      alert("Payment proof submitted successfully! Verifier will review it.");
+      setSelectedFile(null);
+    }, 2000);
+  };
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
@@ -26,7 +53,6 @@ export default function CustomerBilling() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column: Summary */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-indigo-600 p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden">
               <div className="relative z-10">
@@ -47,14 +73,13 @@ export default function CustomerBilling() {
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl text-center border border-slate-100 border-dashed">
                 <div className="w-44 h-44 bg-white border border-slate-200 mx-auto rounded-xl flex items-center justify-center mb-3">
-                  <span className="text-[10px] text-slate-400 font-mono italic">[QR_SCAN_CODE]</span>
+                  <span className="text-[10px] text-slate-400 font-mono italic text-center px-4">[SCAN_ANY_QR_&_PAY]</span>
                 </div>
                 <p className="text-xs font-bold text-slate-600">Scan to pay & upload proof</p>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Form & History */}
           <div className="lg:col-span-2 space-y-6">
             <div className="card shadow-xl shadow-slate-200/50">
               <div className="flex items-center gap-2 mb-6">
@@ -62,25 +87,52 @@ export default function CustomerBilling() {
                 <h2 className="text-sm font-bold tracking-widest uppercase">UPLOAD_PAYMENT_PROOF</h2>
               </div>
               
-              <div className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">PAID_AMOUNT (₹)</label>
-                  <input type="number" placeholder="450" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-xl font-black text-indigo-600 focus:ring-2 focus:ring-indigo-600 outline-none" />
+                  <input type="number" placeholder="450" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-xl font-black text-indigo-600 focus:ring-2 focus:ring-indigo-600 outline-none" />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1">PAYMENT_SCREENSHOT</label>
-                  <div className="border-2 border-dashed border-slate-200 rounded-[2rem] p-16 text-center hover:border-indigo-400 transition-all cursor-pointer group bg-slate-50/30">
-                    <Upload className="mx-auto text-slate-300 group-hover:text-indigo-500 mb-4 transition-all" size={56} />
-                    <p className="text-lg font-black text-slate-800">Tap to upload Screenshot</p>
-                    <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-widest">Only image files (JPG, PNG) are accepted</p>
+                  
+                  {/* Hidden File Input */}
+                  <input 
+                    type="file" 
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+
+                  <div 
+                    onClick={handleUploadClick}
+                    className={`border-2 border-dashed rounded-[2rem] p-12 text-center transition-all cursor-pointer group ${selectedFile ? 'border-emerald-400 bg-emerald-50/20' : 'border-slate-200 hover:border-indigo-400 bg-slate-50/30'}`}
+                  >
+                    {selectedFile ? (
+                      <div className="animate-fade-in">
+                        <FileCheck className="mx-auto text-emerald-500 mb-4" size={56} />
+                        <p className="text-lg font-black text-slate-800 uppercase tracking-tight">{selectedFile.name}</p>
+                        <p className="text-xs text-emerald-600 font-bold mt-1">Image Selected Successfully!</p>
+                      </div>
+                    ) : (
+                      <>
+                        <ImageIcon className="mx-auto text-slate-300 group-hover:text-indigo-500 mb-4 transition-all" size={56} />
+                        <p className="text-lg font-black text-slate-800">Tap to upload Screenshot</p>
+                        <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-widest">Supports Gallery & Camera</p>
+                      </>
+                    )}
                   </div>
                 </div>
-              </div>
 
-              <button className="btn-primary w-full mt-10 flex items-center justify-center gap-3 shadow-2xl shadow-indigo-200 h-16 uppercase tracking-[0.2em] text-sm">
-                SUBMIT_PROOF_FOR_VERIFICATION
-              </button>
+                <button 
+                  type="submit"
+                  disabled={uploading}
+                  className="btn-primary w-full mt-4 flex items-center justify-center gap-3 shadow-2xl shadow-indigo-100 h-16 uppercase tracking-[0.2em] text-sm"
+                >
+                  {uploading ? "SUBMITTING..." : "SUBMIT_PROOF_FOR_VERIFICATION"}
+                </button>
+              </form>
             </div>
 
             <div className="card">
