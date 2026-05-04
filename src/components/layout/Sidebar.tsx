@@ -40,8 +40,8 @@ export default function Sidebar({ role }: { role: keyof typeof menuItems }) {
     <aside className="w-64 bg-white border-r border-slate-100 flex flex-col h-screen sticky top-0 hidden md:flex">
       <div className="p-8 border-b border-slate-50">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black italic">P</div>
-          <h1 className="font-black tracking-tighter text-slate-900 text-xl italic uppercase">PAPERFLOW<span className="text-indigo-600">_ERP</span></h1>
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black italic">F</div>
+          <h1 className="font-black tracking-tighter text-slate-900 text-xl italic uppercase">FINDMYPAPER</h1>
         </div>
       </div>
 
@@ -63,7 +63,11 @@ export default function Sidebar({ role }: { role: keyof typeof menuItems }) {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-slate-50">
+      <div className="p-4 border-t border-slate-50 space-y-2">
+        <div className="px-4 py-2">
+           <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1">POWERED_BY</p>
+           <p className="text-[9px] font-black text-indigo-400 uppercase tracking-tighter">BALAJIPRIMMEDIA TEAM</p>
+        </div>
         <button className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all text-[10px] font-black uppercase tracking-widest">
           <LogOut size={18} />
           TERMINATE_SESSION

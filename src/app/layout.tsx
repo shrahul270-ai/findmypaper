@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PaperFlow ERP | Newspaper Distribution Management",
-  description: "Advanced Multi-tenant SaaS ERP for newspaper distribution and accounting.",
+  title: "FINDMYPAPER | Advanced ERP",
+  description: "Advanced Multi-tenant SaaS ERP for newspaper distribution and accounting. Powered by BALAJIPRIMMEDIA TEAM.",
 };
 
 export default function RootLayout({
