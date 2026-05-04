@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Check, X, Eye, ShieldCheck, Search, Filter, 
   Image as ImageIcon, User, Building2, Bike, 
-  Send, FileText, CheckCircle2, AlertCircle, ChevronDown
+  Send, FileText, CheckCircle2, AlertCircle, ChevronDown, UserCircle2
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,7 @@ export default function VerifierDashboard() {
       amount: 450, 
       date: '05 May 2026', 
       utr: '123456789012',
-      phone: '9876543210',
+      phone: '+91 98765 43210',
       type: 'ONLINE'
     },
     { 
@@ -37,7 +37,7 @@ export default function VerifierDashboard() {
       amount: 320, 
       date: '04 May 2026', 
       utr: '987654321098',
-      phone: '9988776655',
+      phone: '+91 99887 76655',
       type: 'ONLINE'
     }
   ]);
@@ -46,13 +46,13 @@ export default function VerifierDashboard() {
 
   const handleAction = (id: string, action: 'APPROVE' | 'REJECT') => {
     setPayments(prev => prev.filter(p => p.id !== id));
-    setNotification(action === 'APPROVE' ? "Payment approved and credited to Agent!" : "Payment rejected.");
+    setNotification(action === 'APPROVE' ? "Payment approved!" : "Payment rejected.");
     setTimeout(() => setNotification(null), 3000);
     setSelectedPayment(null);
   };
 
   const executeSendReport = (name: string) => {
-    setNotification(`10-Day Summary for ${name} sent to their dashboard!`);
+    setNotification(`10-Day Summary for ${name} sent!`);
     setShowReportModal(false);
     setTimeout(() => setNotification(null), 3000);
   };
@@ -90,7 +90,7 @@ export default function VerifierDashboard() {
               onClick={() => setShowReportModal(true)}
               className="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-black text-[10px] tracking-widest uppercase shadow-xl shadow-indigo-100 flex items-center gap-2 hover:scale-105 transition-all"
             >
-              <Send size={16} /> GENERATE_&_SEND_REPORT
+              <Send size={16} /> DISPATCH_REPORT
             </button>
           </div>
         </header>
@@ -99,20 +99,17 @@ export default function VerifierDashboard() {
           <div className="p-8 border-b border-slate-100 bg-slate-50/30 flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-indigo-600 rounded-xl text-white shadow-lg"><ShieldCheck size={20} /></div>
-              <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">APPROVAL_QUEUE (ONLINE_ONLY)</h2>
+              <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">APPROVAL_QUEUE (ONLINE)</h2>
             </div>
-            <span className="text-[10px] font-black bg-indigo-600 text-white px-4 py-1.5 rounded-full tracking-widest uppercase">
-              {payments.length} PENDING
-            </span>
           </div>
           
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-slate-50 text-[9px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/20">
-                  <th className="px-8 py-5">CUSTOMER_DATA</th>
+                  <th className="px-8 py-5">CUSTOMER_&_PROFILE</th>
                   <th className="px-8 py-5">HIERARCHY_LINK</th>
-                  <th className="px-8 py-5">TRANSACTION_DETAILS</th>
+                  <th className="px-8 py-5 text-right">TRANSACTION</th>
                   <th className="px-8 py-5">PROOF</th>
                   <th className="px-8 py-5 text-right">ACTION</th>
                 </tr>
@@ -121,8 +118,16 @@ export default function VerifierDashboard() {
                 {payments.map((pay) => (
                   <tr key={pay.id} className="hover:bg-slate-50/80 transition-all group">
                     <td className="px-8 py-6">
-                      <p className="font-black text-slate-800 text-sm leading-none mb-1 uppercase italic tracking-tight">{pay.customerName}</p>
-                      <p className="text-[9px] text-indigo-600 font-black uppercase tracking-widest">{pay.customerId}</p>
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-inner group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                           <UserCircle2 size={24} />
+                        </div>
+                        <div>
+                           <p className="font-black text-slate-800 text-sm leading-none mb-1 uppercase italic tracking-tight">{pay.customerName}</p>
+                           <p className="text-[10px] text-slate-500 font-black tracking-widest mb-0.5">{pay.phone}</p>
+                           <p className="text-[9px] text-indigo-600 font-black uppercase tracking-widest opacity-60">{pay.customerId}</p>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-8 py-6">
                       <div className="space-y-1.5">
@@ -134,7 +139,7 @@ export default function VerifierDashboard() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6">
+                    <td className="px-8 py-6 text-right">
                       <p className="text-xl font-black text-slate-900 leading-none italic">₹{pay.amount}</p>
                       <p className="text-[8px] font-black text-slate-400 mt-1 uppercase tracking-widest">UTR: {pay.utr}</p>
                     </td>
@@ -208,18 +213,32 @@ export default function VerifierDashboard() {
         </div>
       )}
 
-      {/* Proof Modal (Existing) */}
+      {/* Proof Verification Modal */}
       {selectedPayment && (
         <div className="fixed inset-0 bg-slate-900/90 backdrop-blur-xl flex items-center justify-center z-[100] p-4">
-           {/* ... existing modal code ... */}
-           <div className="bg-white max-w-2xl w-full rounded-[3rem] p-10 shadow-2xl relative">
-              <button onClick={() => setSelectedPayment(null)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><X size={32} /></button>
-              <h3 className="text-3xl font-black text-slate-900 italic uppercase mb-8">PROOF_VERIFICATION</h3>
-              <div className="aspect-[9/16] bg-slate-100 rounded-3xl flex items-center justify-center mb-8 border-4 border-white shadow-xl">
-                 <ImageIcon size={64} className="text-slate-300" />
-              </div>
-              <button onClick={() => handleAction(selectedPayment.id, 'APPROVE')} className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xs tracking-[0.2em] uppercase shadow-2xl">SUBMIT_VERIFICATION</button>
-           </div>
+          <div className="bg-white max-w-2xl w-full rounded-[3rem] p-10 shadow-2xl relative animate-scale-in overflow-hidden">
+            <button onClick={() => setSelectedPayment(null)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><X size={32} /></button>
+            <div className="flex flex-col md:flex-row gap-10">
+               <div className="flex-1 bg-slate-100 rounded-[2rem] aspect-[9/16] flex items-center justify-center border-4 border-slate-50 shadow-inner relative group overflow-hidden">
+                  <div className="text-center p-8">
+                     <ImageIcon size={64} className="text-slate-300 mx-auto mb-4" />
+                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">PROOF_PREVIEW</p>
+                  </div>
+               </div>
+               <div className="flex-1 space-y-8">
+                  <div>
+                    <p className="text-indigo-600 text-[10px] font-black uppercase tracking-[0.3em] mb-2">VERIFICATION_DETAILS</p>
+                    <h3 className="text-3xl font-black text-slate-900 italic uppercase leading-tight">{selectedPayment.customerName}</h3>
+                    <p className="text-sm font-black text-slate-400 mt-1">{selectedPayment.phone}</p>
+                    <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest italic">₹{selectedPayment.amount} • UTR: {selectedPayment.utr}</p>
+                  </div>
+                  <div className="space-y-3">
+                    <button onClick={() => handleAction(selectedPayment.id, 'APPROVE')} className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xs tracking-[0.2em] uppercase shadow-2xl flex items-center justify-center gap-3"><CheckCircle2 size={20} /> SUBMIT_VERIFICATION</button>
+                    <button onClick={() => handleAction(selectedPayment.id, 'REJECT')} className="w-full bg-white text-rose-600 border-2 border-rose-100 py-5 rounded-2xl font-black text-xs tracking-[0.2em] uppercase">REJECT_PROOF</button>
+                  </div>
+               </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
