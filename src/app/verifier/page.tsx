@@ -82,6 +82,7 @@ export default function VerifierDashboard() {
                 type="text" 
                 placeholder="Search Name, Phone, UTR..." 
                 value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 outline-none shadow-sm"
               />
             </div>
