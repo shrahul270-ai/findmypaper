@@ -14,8 +14,10 @@ export default function CustomerDashboard() {
   const [showPauseModal, setShowPauseModal] = useState(false);
 
   const ads = [
-    { tag: 'SCHOOL_AD', title: 'ST. STEPHENS ADMISSIONS OPEN - 20% OFF' },
-    { tag: 'GOVT_NOTICE', title: 'WATER CONSERVATION MISSION 2026' },
+    { tag: 'SCHOOL_AD', title: 'ST. STEPHENS ADMISSIONS OPEN - 20% OFF ON NEW REGISTRATION' },
+    { tag: 'GYM_OFFER', title: 'GOLD GYM: JOIN NOW & GET 3 MONTHS FREE ON ANNUAL PLAN' },
+    { tag: 'GOVT_NOTICE', title: 'WATER CONSERVATION MISSION 2026 - SAVE WATER, SAVE LIFE' },
+    { tag: 'PROPERTY_DEAL', title: '2BHK FLATS STARTING AT ₹45 LAKHS IN ROHINI SECTOR 24' },
   ];
 
   const activeServices = [
@@ -23,7 +25,6 @@ export default function CustomerDashboard() {
     { name: 'Pratiyogita Darpan', type: 'MAGAZINE', price: 95 },
   ];
 
-  // Simulated Leave Days
   const leaveDays = [5, 12, 18]; 
 
   return (
@@ -66,7 +67,6 @@ export default function CustomerDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8 space-y-8">
               
-              {/* Active Service Widget */}
               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group">
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-6">
@@ -94,7 +94,6 @@ export default function CustomerDashboard() {
                 </div>
               </div>
 
-              {/* Delivery Log - Updated with ABSENT logic */}
               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                 <div className="flex justify-between items-center mb-8">
                   <div className="flex items-center gap-3">
@@ -126,14 +125,12 @@ export default function CustomerDashboard() {
               </div>
             </div>
 
-            {/* Sidebar Area - Expanded Squad Details */}
             <div className="lg:col-span-4 space-y-6">
               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                 <h2 className="text-[10px] font-black tracking-widest uppercase text-slate-400 mb-8 flex items-center gap-2">
                   <div className="w-4 h-0.5 bg-slate-200"></div> YOUR_SERVICE_SQUAD
                 </h2>
                 <div className="space-y-6">
-                   {/* Agent Details */}
                    <div className="relative group">
                       <div className="flex items-center gap-4 p-5 bg-slate-50 rounded-[2rem] border border-slate-100 group-hover:bg-indigo-50/50 transition-all">
                         <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-indigo-600 border border-slate-200 shrink-0 overflow-hidden">
@@ -154,7 +151,6 @@ export default function CustomerDashboard() {
                       </div>
                    </div>
 
-                   {/* Hawker Details */}
                    <div className="relative group">
                       <div className="flex items-center gap-4 p-5 bg-slate-50 rounded-[2rem] border border-slate-100 group-hover:bg-emerald-50/50 transition-all">
                         <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 border border-slate-200 shrink-0 overflow-hidden">
@@ -184,10 +180,6 @@ export default function CustomerDashboard() {
                 >
                   REQUEST_LEAVE
                 </button>
-                <div className="bg-indigo-50 p-6 rounded-[2rem] border border-indigo-100">
-                   <p className="text-[9px] font-black text-indigo-600 uppercase mb-2">QUICK_HELP</p>
-                   <p className="text-[10px] font-bold text-slate-500 leading-relaxed">Facing issues? Contact your Agent directly via phone for billing disputes.</p>
-                </div>
               </div>
             </div>
 
@@ -195,7 +187,6 @@ export default function CustomerDashboard() {
         </main>
       </div>
 
-      {/* Leave Modal */}
       {showPauseModal && (
         <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
           <div className="bg-white max-w-md w-full rounded-[2.5rem] p-10 shadow-2xl relative animate-scale-in">
