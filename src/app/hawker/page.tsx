@@ -1,90 +1,111 @@
+"use client";
+
 import React from 'react';
-import { Camera, MapPin, CheckCircle2, Circle, Clock, Navigation } from 'lucide-react';
+import { Camera, MapPin, CheckCircle2, Circle, Clock, Navigation, Download, FileSpreadsheet, User, CreditCard, DollarSign } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import StatCard from '@/components/ui/StatCard';
 
 export default function HawkerDashboard() {
   const deliveries = [
-    { id: 1, address: 'Flat 402, Green Valley Apartments', customer: 'Anil Mehta', status: 'PENDING' },
-    { id: 2, address: 'B-12, Rose Villa, Sector 4', customer: 'Suresh Kumar', status: 'DELIVERED' },
-    { id: 3, address: 'Shop No. 5, Market Square', customer: 'Daily Needs Store', status: 'PENDING' },
-    { id: 4, address: 'H.No 124, Gali No. 3', customer: 'Priya Singh', status: 'PENDING' },
+    { id: 'C104', name: 'Anil Mehta', address: 'Flat 402, Green Valley', status: 'DELIVERED', pay_mode: 'CASH', amount: 450 },
+    { id: 'C105', name: 'Suresh Kumar', address: 'B-12, Rose Villa', status: 'PENDING', pay_mode: 'ONLINE', amount: 320 },
+    { id: 'C106', name: 'Daily Needs Store', address: 'Shop No. 5, Market', status: 'DELIVERED', pay_mode: 'CASH', amount: 1200 },
+    { id: 'C107', name: 'Priya Singh', address: 'H.No 124, Gali 3', status: 'PENDING', pay_mode: 'SCANNER', amount: 500 },
   ];
+
+  const handleDownloadCSV = () => {
+    console.log("Generating CSV for Agent settlement...");
+    // Logic to generate CSV blob would go here
+    alert("Report Downloaded: settlement_report_05May.csv");
+  };
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
       <Sidebar role="HAWKER" />
       
-      <main className="flex-1 p-6 md:p-8">
-        <header className="mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">DELIVERY_TERMINAL</h1>
-              <p className="text-[var(--muted)] text-sm">Assigned Route: Sector 4 - Rohini</p>
-            </div>
-            
-            <div className="flex gap-3">
-              <button className="flex items-center gap-2 bg-[var(--primary)] text-white px-4 py-2.5 rounded-lg font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-95">
-                <Camera size={18} />
-                MARK_ATTENDANCE
-              </button>
-            </div>
+      <main className="flex-1 p-8">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-800">MY_ROUTE_TERMINAL</h1>
+            <p className="text-indigo-600 text-[10px] font-bold uppercase tracking-widest">Sector 4 - Rohini | 05 May 2026</p>
+          </div>
+          
+          <div className="flex gap-3">
+            <button 
+              onClick={handleDownloadCSV}
+              className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-50 shadow-sm"
+            >
+              <FileSpreadsheet size={18} className="text-green-600" />
+              DOWNLOAD_SETTLEMENT_CSV
+            </button>
+            <button className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-lg shadow-indigo-100">
+              <Camera size={18} />
+              MARK_ATTENDANCE
+            </button>
           </div>
         </header>
 
         {/* Stats Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <StatCard title="TOTAL_DELIVERIES" value="124" icon={Navigation} />
-          <StatCard title="COMPLETED" value="86" icon={CheckCircle2} />
-          <StatCard title="PENDING" value="38" icon={Clock} />
+          <StatCard title="TODAY_CASH_COLLECTION" value="₹1,650" icon={DollarSign} />
+          <StatCard title="DELIVERIES_COMPLETED" value="28/45" icon={CheckCircle2} />
+          <StatCard title="PENDING_TASKS" value="17" icon={Clock} />
         </div>
 
-        {/* Attendance Alert if not marked */}
-        <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start gap-3 mb-8">
-          <MapPin className="text-amber-600 mt-1" size={20} />
-          <div>
-            <h3 className="text-amber-800 font-bold text-sm">ATTENDANCE_REQUIRED</h3>
-            <p className="text-amber-700 text-xs">Please capture a selfie at your start location to begin your route tracking.</p>
+        {/* Customer & Settlement List */}
+        <div className="card p-0 overflow-hidden shadow-xl shadow-slate-200/50">
+          <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <h2 className="text-xs font-bold tracking-widest uppercase text-slate-500">SETTLEMENT_LOG: MY_CUSTOMERS</h2>
           </div>
-        </div>
-
-        {/* Delivery List */}
-        <div className="card">
-          <h2 className="text-sm font-bold tracking-wider mb-6 text-[var(--muted)] uppercase">TODAY_ROUTE_MAP</h2>
           
-          <div className="space-y-4">
-            {deliveries.map((item) => (
-              <div 
-                key={item.id} 
-                className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
-                  item.status === 'DELIVERED' 
-                    ? 'bg-green-50 border-green-100 opacity-75' 
-                    : 'bg-white border-[var(--divider)] hover:border-[var(--primary)] shadow-sm'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`mt-1 ${item.status === 'DELIVERED' ? 'text-green-600' : 'text-gray-300'}`}>
-                    {item.status === 'DELIVERED' ? <CheckCircle2 size={24} /> : <Circle size={24} />}
-                  </div>
-                  <div>
-                    <p className={`font-bold text-sm ${item.status === 'DELIVERED' ? 'text-green-900 line-through' : 'text-slate-900'}`}>
-                      {item.address}
-                    </p>
-                    <p className="text-[var(--muted)] text-xs font-medium">{item.customer}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  {item.status === 'PENDING' ? (
-                    <button className="text-[var(--primary)] font-bold text-[10px] tracking-widest bg-[var(--primary-glow)] px-3 py-1.5 rounded-md hover:bg-[var(--primary)] hover:text-white transition-all uppercase">
-                      MARK_DONE
-                    </button>
-                  ) : (
-                    <span className="text-green-600 font-bold text-[10px] tracking-widest uppercase">DONE</span>
-                  )}
-                </div>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-slate-100 text-[9px] uppercase font-bold tracking-widest text-slate-400">
+                  <th className="px-6 py-4">CUSTOMER_NAME / ID</th>
+                  <th className="px-6 py-4">DELIVERY_STATUS</th>
+                  <th className="px-6 py-4">PAYMENT_MODE</th>
+                  <th className="px-6 py-4">BILL_AMOUNT</th>
+                  <th className="px-6 py-4 text-right">ACTION</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {deliveries.map((item) => (
+                  <tr key={item.id} className="hover:bg-slate-50/50 transition-all">
+                    <td className="px-6 py-4">
+                      <p className="font-bold text-slate-800">{item.name}</p>
+                      <p className="text-[10px] text-slate-400 font-mono italic">{item.id} | {item.address}</p>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        {item.status === 'DELIVERED' ? (
+                          <span className="flex items-center gap-1 text-[9px] font-black text-green-600 bg-green-50 border border-green-100 px-2 py-0.5 rounded-full uppercase">
+                            <CheckCircle2 size={10} /> DELIVERED
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-1 text-[9px] font-black text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full uppercase">
+                            <Circle size={10} /> PENDING
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-600">
+                        {item.pay_mode === 'CASH' ? (
+                          <div className="flex items-center gap-1 bg-blue-50 text-blue-600 px-2 py-0.5 rounded uppercase"><DollarSign size={10} /> CASH</div>
+                        ) : (
+                          <div className="flex items-center gap-1 bg-purple-50 text-purple-600 px-2 py-0.5 rounded uppercase"><CreditCard size={10} /> {item.pay_mode}</div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 font-black text-slate-700">₹{item.amount}</td>
+                    <td className="px-6 py-4 text-right">
+                      <button className="text-[10px] font-bold text-indigo-600 hover:underline uppercase">MARK_DELIVERED</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </main>
