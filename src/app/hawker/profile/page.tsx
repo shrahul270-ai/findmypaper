@@ -5,7 +5,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import { 
   User, Mail, Phone, MapPin, Shield, Bell, 
   Settings, LogOut, Edit3, UserCircle2, 
-  ChevronRight, CheckCircle2, Bike, Award, Star
+  ChevronRight, CheckCircle2, Bike, Award, Star, Wallet
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlobalAlert, TopAdBar } from '@/components/ui/Promotions';
