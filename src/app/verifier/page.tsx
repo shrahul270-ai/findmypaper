@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { 
   Check, X, Eye, ShieldCheck, Search, Filter, 
   Image as ImageIcon, User, Building2, Bike, 
-  Send, FileText, CheckCircle2, AlertCircle, ChevronDown, UserCircle2
+  Send, FileText, CheckCircle2, AlertCircle, ChevronDown, UserCircle2,
+  Clock, XCircle, History, MessageSquare, RefreshCw, QrCode, PhoneCall
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
@@ -12,234 +13,240 @@ import { cn } from '@/lib/utils';
 export default function VerifierDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
   const [showReportModal, setShowReportModal] = useState(false);
-  const [targetType, setTargetType] = useState<'AGENT' | 'HAWKER'>('AGENT');
 
+  // Expanded Transaction Data for Verifier
   const [payments, setPayments] = useState([
-    { 
-      id: 'PAY-8821', 
-      customerId: 'CUST-1042', 
-      customerName: 'Amit Verma', 
-      agency: 'Sita Ram Agency', 
-      hawker: 'Ramesh Yadav',
-      amount: 450, 
-      date: '05 May 2026', 
-      utr: '123456789012',
-      phone: '+91 98765 43210',
-      type: 'ONLINE'
-    },
-    { 
-      id: 'PAY-8822', 
-      customerId: 'CUST-1056', 
-      customerName: 'Priya Dhar', 
-      agency: 'Metro News', 
-      hawker: 'Amit Singh',
-      amount: 320, 
-      date: '04 May 2026', 
-      utr: '987654321098',
-      phone: '+91 99887 76655',
-      type: 'ONLINE'
-    }
+    { id: 'PAY-8821', customerName: 'Amit Verma', agency: 'Sita Ram Agency', hawker: 'Ramesh Yadav', amount: 450, status: 'PENDING', utr: 'UTR123456789012', phone: '+91 98765 43210', time: '10:30 AM' },
+    { id: 'PAY-8822', customerName: 'Priya Dhar', agency: 'Metro News', hawker: 'Amit Singh', amount: 320, status: 'PENDING', utr: 'UTR987654321098', phone: '+91 99887 76655', time: '11:15 AM' },
+    { id: 'PAY-8823', customerName: 'Suresh Kumar', agency: 'Aggarwal Dist', hawker: 'Rahul Sharma', amount: 500, status: 'REJECTED', reason: 'UTR Number Mismatch', utr: 'UTR000000000', phone: '+91 95556 66777', time: '09:00 AM' },
+    { id: 'PAY-8824', customerName: 'Daily Store', agency: 'Metro News', hawker: 'Amit Singh', amount: 1200, status: 'PAID', utr: 'UTR1122334455', phone: '+91 91223 34455', time: 'Yesterday' },
   ]);
 
-  const [notification, setNotification] = useState<string | null>(null);
-
   const handleAction = (id: string, action: 'APPROVE' | 'REJECT') => {
-    setPayments(prev => prev.filter(p => p.id !== id));
-    setNotification(action === 'APPROVE' ? "Payment approved!" : "Payment rejected.");
-    setTimeout(() => setNotification(null), 3000);
+    if (action === 'REJECT') {
+      const tx = payments.find(p => p.id === id);
+      setSelectedPayment(tx);
+      setShowRejectModal(true);
+      return;
+    }
+    setPayments(prev => prev.map(p => p.id === id ? { ...p, status: 'PAID' } : p));
+  };
+
+  const confirmRejection = () => {
+    if (!rejectReason) return alert("Please provide a reason for rejection.");
+    setPayments(prev => prev.map(p => p.id === selectedPayment.id ? { ...p, status: 'REJECTED', reason: rejectReason } : p));
+    setShowRejectModal(false);
+    setRejectReason('');
     setSelectedPayment(null);
   };
 
-  const executeSendReport = (name: string) => {
-    setNotification(`10-Day Summary for ${name} sent!`);
-    setShowReportModal(false);
-    setTimeout(() => setNotification(null), 3000);
-  };
+  const filteredPayments = payments.filter(p => 
+    p.customerName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    p.phone.includes(searchTerm) || 
+    p.utr.includes(searchTerm)
+  );
+
+  const pendingQueue = filteredPayments.filter(p => p.status === 'PENDING');
+  const rejectedLog = filteredPayments.filter(p => p.status === 'REJECTED');
+  const historyLog = filteredPayments.filter(p => p.status === 'PAID');
 
   return (
-    <div className="flex min-h-screen bg-[var(--background)]">
+    <div className="flex min-h-screen bg-slate-50">
       <Sidebar role="VERIFIER" />
       
-      <main className="flex-1 p-8 overflow-y-auto">
-        {notification && (
-          <div className="fixed top-24 right-8 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl z-[200] flex items-center gap-3 animate-slide-in">
-            <CheckCircle2 size={20} className="text-emerald-400" />
-            <p className="text-xs font-black uppercase tracking-widest">{notification}</p>
-          </div>
-        )}
-
-        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10">
+      <main className="flex-1 p-4 md:p-10 overflow-y-auto">
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
           <div>
-            <p className="text-indigo-600 text-[10px] font-black tracking-[0.2em] uppercase mb-1">ACCOUNTING_PORTAL: VERIFIER</p>
-            <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">PAYMENT_AUDIT_TERMINAL</h1>
+            <p className="text-indigo-600 text-[10px] font-black tracking-[0.3em] uppercase mb-1 italic">ACCOUNTING_PORTAL: VERIFIER_CONSOLE</p>
+            <h1 className="text-4xl font-black italic uppercase tracking-tighter text-slate-900 leading-none">PAYMENT_AUDIT_TERMINAL</h1>
           </div>
           
           <div className="flex flex-wrap gap-4 w-full lg:w-auto">
-            <div className="relative flex-1 md:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+            <div className="relative flex-1 md:w-96 text-slate-900">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text" 
-                placeholder="Search Name, Phone, UTR..." 
+                placeholder="SEARCH NAME, PHONE, UTR..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-widest focus:ring-2 focus:ring-indigo-600 outline-none shadow-sm"
+                className="w-full pl-14 pr-6 py-4 bg-white border border-slate-200 rounded-[2rem] text-[11px] font-black uppercase tracking-widest focus:ring-4 focus:ring-indigo-100 outline-none shadow-xl shadow-slate-200/50 transition-all"
               />
             </div>
-            <button 
-              onClick={() => setShowReportModal(true)}
-              className="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-black text-[10px] tracking-widest uppercase shadow-xl shadow-indigo-100 flex items-center gap-2 hover:scale-105 transition-all"
-            >
-              <Send size={16} /> DISPATCH_REPORT
+            <button onClick={() => setShowReportModal(true)} className="bg-indigo-600 text-white px-8 py-4 rounded-[2rem] font-black text-[11px] tracking-widest uppercase shadow-2xl shadow-indigo-200 flex items-center gap-3 hover:scale-105 active:scale-95 transition-all">
+              <Send size={18} /> DISPATCH_REPORT
             </button>
           </div>
         </header>
 
-        <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
-          <div className="p-8 border-b border-slate-100 bg-slate-50/30 flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-indigo-600 rounded-xl text-white shadow-lg"><ShieldCheck size={20} /></div>
-              <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">APPROVAL_QUEUE (ONLINE)</h2>
-            </div>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-slate-50 text-[9px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/20">
-                  <th className="px-8 py-5">CUSTOMER_&_PROFILE</th>
-                  <th className="px-8 py-5">HIERARCHY_LINK</th>
-                  <th className="px-8 py-5 text-right">TRANSACTION</th>
-                  <th className="px-8 py-5">PROOF</th>
-                  <th className="px-8 py-5 text-right">ACTION</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {payments.map((pay) => (
-                  <tr key={pay.id} className="hover:bg-slate-50/80 transition-all group">
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 border border-indigo-100 shadow-inner group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                           <UserCircle2 size={24} />
-                        </div>
-                        <div>
-                           <p className="font-black text-slate-800 text-sm leading-none mb-1 uppercase italic tracking-tight">{pay.customerName}</p>
-                           <p className="text-[10px] text-slate-500 font-black tracking-widest mb-0.5">{pay.phone}</p>
-                           <p className="text-[9px] text-indigo-600 font-black uppercase tracking-widest opacity-60">{pay.customerId}</p>
-                        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+           {/* Section 1: Approval Queue (Center Piece) */}
+           <div className="lg:col-span-2 space-y-12">
+              <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                 <div className="flex items-center justify-between mb-8 px-6">
+                    <div className="flex items-center gap-4">
+                       <div className="p-3 bg-indigo-600 rounded-2xl text-white shadow-xl shadow-indigo-100"><ShieldCheck size={24} /></div>
+                       <h2 className="text-2xl font-black italic uppercase tracking-tighter text-slate-900">APPROVAL_QUEUE (ONLINE)</h2>
+                    </div>
+                    <span className="bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-[11px] font-black italic">{pendingQueue.length} PENDING</span>
+                 </div>
+
+                 <div className="space-y-5">
+                    {pendingQueue.map((pay) => (
+                       <div key={pay.id} className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl transition-all group relative overflow-hidden">
+                          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                             <div className="flex items-center gap-5">
+                                <div className="w-14 h-14 bg-indigo-50 rounded-[1.5rem] flex items-center justify-center text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-inner">
+                                   <UserCircle2 size={32} />
+                                </div>
+                                <div>
+                                   <p className="font-black text-slate-900 text-lg leading-none mb-1 uppercase italic tracking-tighter">{pay.customerName}</p>
+                                   <p className="text-[11px] text-indigo-600 font-black uppercase tracking-widest mb-1 italic">{pay.agency} • {pay.hawker}</p>
+                                   <p className="text-[9px] text-slate-400 font-black tracking-widest flex items-center gap-1"><PhoneCall size={10} /> {pay.phone}</p>
+                                </div>
+                             </div>
+
+                             <div className="flex flex-col items-end gap-1">
+                                <p className="text-3xl font-black text-slate-900 italic tracking-tighter leading-none mb-1">₹{pay.amount}</p>
+                                <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-lg">UTR: {pay.utr}</p>
+                             </div>
+
+                             <div className="flex gap-4 w-full md:w-auto">
+                                <button onClick={() => handleAction(pay.id, 'REJECT')} className="flex-1 md:w-14 h-14 bg-rose-50 text-rose-600 rounded-[1.5rem] flex items-center justify-center hover:bg-rose-600 hover:text-white transition-all border border-rose-100 shadow-sm"><X size={28} /></button>
+                                <button onClick={() => handleAction(pay.id, 'APPROVE')} className="flex-1 md:w-14 h-14 bg-emerald-50 text-emerald-600 rounded-[1.5rem] flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"><Check size={28} /></button>
+                             </div>
+                          </div>
+                       </div>
+                    ))}
+                    {pendingQueue.length === 0 && (
+                      <div className="p-20 text-center bg-white rounded-[3rem] border-4 border-dashed border-slate-100 text-slate-300">
+                         <CheckCircle2 size={64} className="mx-auto mb-4 opacity-20" />
+                         <p className="font-black uppercase italic tracking-widest text-xs">QUEUE_CLEARED_SUCCESSFULLY</p>
                       </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-2 text-[10px] text-slate-600 font-black uppercase tracking-tight">
-                          <Building2 size={12} className="text-slate-300" /> {pay.agency}
-                        </div>
-                        <div className="flex items-center gap-2 text-[9px] text-slate-400 font-black uppercase tracking-widest">
-                          <Bike size={12} className="text-slate-200" /> {pay.hawker}
-                        </div>
+                    )}
+                 </div>
+              </section>
+
+              {/* Section 2: Settlement History (PhonePe Style) */}
+              <section className="animate-in fade-in duration-700">
+                 <div className="flex items-center gap-4 mb-8 px-6">
+                    <div className="p-3 bg-emerald-600 rounded-2xl text-white shadow-xl shadow-emerald-100"><History size={24} /></div>
+                    <h2 className="text-2xl font-black italic uppercase tracking-tighter text-slate-900">SETTLEMENT_HISTORY (PAID)</h2>
+                 </div>
+                 <div className="bg-white rounded-[3.5rem] border border-slate-100 shadow-xl overflow-hidden p-8">
+                    {historyLog.map((tx, i) => (
+                       <div key={i} className="flex justify-between items-center p-6 border-b border-slate-50 last:border-none hover:bg-slate-50 transition-all rounded-[2rem]">
+                          <div className="flex items-center gap-5">
+                             <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shadow-inner"><CheckCircle2 size={24} /></div>
+                             <div>
+                                <p className="font-black text-slate-900 uppercase italic text-base tracking-tighter">{tx.customerName}</p>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{tx.time} | {tx.agency}</p>
+                             </div>
+                          </div>
+                          <p className="text-2xl font-black text-slate-900 italic tracking-tighter">₹{tx.amount}</p>
+                       </div>
+                    ))}
+                    {historyLog.length === 0 && <p className="p-10 text-center text-[10px] font-black text-slate-300 uppercase tracking-widest">NO_SETTLEMENTS_TODAY</p>}
+                 </div>
+              </section>
+           </div>
+
+           {/* Section 3: Rejected Audit Log (Separate Sidebar Log) */}
+           <div className="lg:col-span-1">
+              <section className="sticky top-10 animate-in fade-in slide-in-from-right-4 duration-500">
+                 <div className="flex items-center justify-between mb-8 px-4">
+                    <div className="flex items-center gap-3">
+                       <div className="p-3 bg-rose-600 rounded-2xl text-white shadow-xl shadow-rose-100"><AlertCircle size={20} /></div>
+                       <h2 className="text-xl font-black italic uppercase tracking-tighter text-slate-900 leading-none">REJECTED_LOG</h2>
+                    </div>
+                    <span className="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-black italic">{rejectedLog.length} CASES</span>
+                 </div>
+                 
+                 <div className="space-y-6">
+                    {rejectedLog.map((tx) => (
+                       <div key={tx.id} className="bg-white p-6 rounded-[2.5rem] border border-rose-100 shadow-xl relative overflow-hidden group hover:border-indigo-600 transition-all">
+                          <div className="flex justify-between items-start mb-4">
+                             <div>
+                                <h3 className="font-black text-slate-900 uppercase italic text-sm tracking-tight leading-none mb-1">{tx.customerName}</h3>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">₹{tx.amount} | {tx.time}</p>
+                             </div>
+                             <button 
+                                onClick={() => handleAction(tx.id, 'APPROVE')}
+                                className="w-10 h-10 bg-indigo-600 text-white rounded-xl shadow-lg hover:scale-110 transition-all flex items-center justify-center"
+                             >
+                                <RefreshCw size={16} />
+                             </button>
+                          </div>
+                          <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100 border-dashed">
+                             <p className="text-[9px] font-black text-rose-600 uppercase tracking-widest mb-1 italic flex items-center gap-1"><MessageSquare size={12} /> REASON</p>
+                             <p className="text-[11px] font-bold text-slate-600 italic leading-relaxed">"{tx.reason}"</p>
+                          </div>
+                       </div>
+                    ))}
+                    {rejectedLog.length === 0 && (
+                      <div className="p-10 text-center bg-white rounded-[2.5rem] border-2 border-dashed border-slate-100 text-slate-200">
+                         <p className="font-black uppercase italic tracking-widest text-[9px]">NO_REJECTED_PAYMENTS</p>
                       </div>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <p className="text-xl font-black text-slate-900 leading-none italic">₹{pay.amount}</p>
-                      <p className="text-[8px] font-black text-slate-400 mt-1 uppercase tracking-widest">UTR: {pay.utr}</p>
-                    </td>
-                    <td className="px-8 py-6">
-                      <button 
-                        onClick={() => setSelectedPayment(pay)}
-                        className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg shadow-indigo-100 hover:scale-105 transition-all"
-                      >
-                        <ImageIcon size={14} /> VIEW_PROOF
-                      </button>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <div className="flex justify-end gap-3 transition-all">
-                        <button 
-                          onClick={() => handleAction(pay.id, 'REJECT')}
-                          className="p-3 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-600 hover:text-white transition-all border border-rose-100 shadow-sm"
-                        >
-                          <X size={20} />
-                        </button>
-                        <button 
-                          onClick={() => handleAction(pay.id, 'APPROVE')}
-                          className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"
-                        >
-                          <Check size={20} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    )}
+                 </div>
+              </section>
+           </div>
         </div>
       </main>
 
-      {/* Report Modal */}
-      {showReportModal && (
-        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[110] p-4">
-          <div className="bg-white max-w-lg w-full rounded-[3rem] p-10 shadow-2xl relative animate-scale-in">
-            <button onClick={() => setShowReportModal(false)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><X size={24} /></button>
-            <h2 className="text-2xl font-black text-slate-900 text-center mb-10 uppercase italic tracking-tighter">DISPATCH_REPORT</h2>
-            
-            <div className="space-y-8">
-               <div className="flex bg-slate-100 p-1.5 rounded-2xl">
-                 <button onClick={() => setTargetType('AGENT')} className={cn("flex-1 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", targetType === 'AGENT' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400")}>TARGET: AGENT</button>
-                 <button onClick={() => setTargetType('HAWKER')} className={cn("flex-1 py-3 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", targetType === 'HAWKER' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400")}>TARGET: HAWKER</button>
-               </div>
+      {/* Reject Modal with Mandatory Comment */}
+      {showRejectModal && (
+        <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4 text-slate-900">
+          <div className="bg-white max-w-sm w-full rounded-[3.5rem] p-10 shadow-2xl relative animate-scale-in border-4 border-white">
+             <button onClick={() => setShowRejectModal(false)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><XCircle size={24} /></button>
+             
+             <div className="text-center mb-10">
+                <div className="w-20 h-20 bg-rose-50 text-rose-600 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border-2 border-rose-100 shadow-inner"><AlertCircle size={40} /></div>
+                <h2 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter leading-none mb-2">REJECT_BILL</h2>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">CUSTOMER: {selectedPayment?.customerName}</p>
+             </div>
 
-               <div className="space-y-4">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest px-2">SELECT_{targetType}_TO_NOTIFY</p>
-                  <div className="space-y-2">
-                     {targetType === 'AGENT' ? (
-                       ['Sita Ram Agency', 'Metro News', 'Aggarwal Distribution'].map(n => (
-                         <button key={n} onClick={() => executeSendReport(n)} className="w-full flex items-center justify-between p-5 bg-slate-50 hover:bg-indigo-50 border border-slate-100 rounded-3xl group transition-all">
-                            <span className="text-xs font-black text-slate-800 uppercase tracking-tight">{n}</span>
-                            <div className="bg-indigo-600 text-white p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all"><Send size={14} /></div>
-                         </button>
-                       ))
-                     ) : (
-                       ['Ramesh Yadav', 'Amit Singh', 'Suresh Kumar'].map(n => (
-                         <button key={n} onClick={() => executeSendReport(n)} className="w-full flex items-center justify-between p-5 bg-slate-50 hover:bg-emerald-50 border border-slate-100 rounded-3xl group transition-all">
-                            <span className="text-xs font-black text-slate-800 uppercase tracking-tight">{n}</span>
-                            <div className="bg-emerald-600 text-white p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all"><Send size={14} /></div>
-                         </button>
-                       ))
-                     )}
-                  </div>
-               </div>
-            </div>
+             <div className="space-y-8">
+                <div>
+                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 block px-2">WHY ARE YOU REJECTING?</label>
+                   <textarea 
+                    value={rejectReason}
+                    onChange={(e) => setRejectReason(e.target.value)}
+                    placeholder="E.g. Incorrect UTR number provided, Screenshot not clear..."
+                    className="w-full bg-slate-50 border-2 border-slate-100 rounded-[2rem] p-6 text-xs font-bold text-slate-700 outline-none focus:ring-4 focus:ring-rose-100 h-40 resize-none transition-all placeholder:text-slate-300"
+                   />
+                </div>
+                <button 
+                  onClick={confirmRejection}
+                  className="w-full bg-rose-600 text-white py-5 rounded-[2rem] font-black text-[12px] tracking-[0.2em] uppercase shadow-2xl shadow-rose-200 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                >
+                   <XCircle size={20} /> CONFIRM_REJECTION
+                </button>
+             </div>
           </div>
         </div>
       )}
 
-      {/* Proof Verification Modal */}
-      {selectedPayment && (
-        <div className="fixed inset-0 bg-slate-900/90 backdrop-blur-xl flex items-center justify-center z-[100] p-4">
-          <div className="bg-white max-w-2xl w-full rounded-[3rem] p-10 shadow-2xl relative animate-scale-in overflow-hidden">
-            <button onClick={() => setSelectedPayment(null)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><X size={32} /></button>
-            <div className="flex flex-col md:flex-row gap-10">
-               <div className="flex-1 bg-slate-100 rounded-[2rem] aspect-[9/16] flex items-center justify-center border-4 border-slate-50 shadow-inner relative group overflow-hidden">
-                  <div className="text-center p-8">
-                     <ImageIcon size={64} className="text-slate-300 mx-auto mb-4" />
-                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">PROOF_PREVIEW</p>
-                  </div>
-               </div>
-               <div className="flex-1 space-y-8">
-                  <div>
-                    <p className="text-indigo-600 text-[10px] font-black uppercase tracking-[0.3em] mb-2">VERIFICATION_DETAILS</p>
-                    <h3 className="text-3xl font-black text-slate-900 italic uppercase leading-tight">{selectedPayment.customerName}</h3>
-                    <p className="text-sm font-black text-slate-400 mt-1">{selectedPayment.phone}</p>
-                    <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest italic">₹{selectedPayment.amount} • UTR: {selectedPayment.utr}</p>
-                  </div>
-                  <div className="space-y-3">
-                    <button onClick={() => handleAction(selectedPayment.id, 'APPROVE')} className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xs tracking-[0.2em] uppercase shadow-2xl flex items-center justify-center gap-3"><CheckCircle2 size={20} /> SUBMIT_VERIFICATION</button>
-                    <button onClick={() => handleAction(selectedPayment.id, 'REJECT')} className="w-full bg-white text-rose-600 border-2 border-rose-100 py-5 rounded-2xl font-black text-xs tracking-[0.2em] uppercase">REJECT_PROOF</button>
+      {/* Dispatch Report Modal */}
+      {showReportModal && (
+         <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4 text-slate-900">
+            <div className="bg-white max-w-lg w-full rounded-[4rem] p-12 shadow-2xl relative animate-scale-in overflow-hidden border-4 border-white">
+               <button onClick={() => setShowReportModal(false)} className="absolute top-10 right-10 text-slate-300 hover:text-slate-900 transition-colors"><X size={32} /></button>
+               <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter text-center mb-10">DISPATCH_TERMINAL</h2>
+               <div className="space-y-6">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">SELECT_TARGET_FOR_AUDIT_REPORT</p>
+                  <div className="grid grid-cols-1 gap-4">
+                     {['METRO_NEWS_AGENCY', 'SITA_RAM_AGENCY', 'RAHUL_HAWKER_GROUP'].map(n => (
+                        <button key={n} className="w-full p-6 bg-slate-50 hover:bg-indigo-600 hover:text-white rounded-[2.5rem] border border-slate-100 font-black text-[11px] uppercase italic tracking-widest text-slate-700 transition-all flex justify-between items-center group shadow-sm">
+                           {n} <Send size={16} className="opacity-0 group-hover:opacity-100 transition-all" />
+                        </button>
+                     ))}
                   </div>
                </div>
             </div>
-          </div>
-        </div>
+         </div>
       )}
     </div>
   );
