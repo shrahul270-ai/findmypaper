@@ -1,37 +1,43 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Camera, MapPin, CheckCircle2, Circle, Clock, Navigation, Download, FileSpreadsheet, User, CreditCard, DollarSign, X } from 'lucide-react';
+import { 
+  Camera, MapPin, CheckCircle2, Circle, Clock, Navigation, 
+  Download, FileSpreadsheet, User, CreditCard, DollarSign, 
+  X, UserCircle2, Filter, ChevronRight, Wallet
+} from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
-import StatCard from '@/components/ui/StatCard';
+import { cn } from '@/lib/utils';
 
 export default function HawkerDashboard() {
+  const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'PAID'>('ALL');
   const [deliveries, setDeliveries] = useState([
-    { id: 'C104', name: 'Anil Mehta', address: 'Flat 402, Green Valley', status: 'DELIVERED', pay_mode: 'CASH', amount: 450 },
-    { id: 'C105', name: 'Suresh Kumar', address: 'B-12, Rose Villa', status: 'PENDING', pay_mode: 'ONLINE', amount: 320 },
-    { id: 'C106', name: 'Daily Needs Store', address: 'Shop No. 5, Market', status: 'DELIVERED', pay_mode: 'CASH', amount: 1200 },
-    { id: 'C107', name: 'Priya Singh', address: 'H.No 124, Gali 3', status: 'PENDING', pay_mode: 'SCANNER', amount: 500 },
+    { id: 'C104', name: 'Anil Mehta', address: 'Flat 402, Green Valley', status: 'DELIVERED', pay_mode: 'CASH', amount: 450, payment_status: 'PAID' },
+    { id: 'C105', name: 'Suresh Kumar', address: 'B-12, Rose Villa', status: 'PENDING', pay_mode: 'ONLINE', amount: 320, payment_status: 'PENDING' },
+    { id: 'C106', name: 'Daily Needs Store', address: 'Shop No. 5, Market', status: 'DELIVERED', pay_mode: 'CASH', amount: 1200, payment_status: 'ADVANCED' },
+    { id: 'C107', name: 'Priya Singh', address: 'H.No 124, Gali 3', status: 'PENDING', pay_mode: 'SCANNER', amount: 500, payment_status: 'PENDING' },
   ]);
 
   const [notification, setNotification] = useState<string | null>(null);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
 
-  const handleDownloadCSV = () => {
+  const handleDownloadCSV = (e: React.MouseEvent) => {
+    e.preventDefault();
     setNotification("Settlement CSV generated and downloaded!");
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const handleMarkAttendance = () => {
-    setAttendanceMarked(true);
-    setNotification("Attendance marked successfully via Camera Verification!");
+  const markAsPaid = (id: string) => {
+    setDeliveries(prev => prev.map(d => d.id === id ? { ...d, payment_status: 'PAID', status: 'DELIVERED' } : d));
+    setNotification("Payment marked as PAID and Delivered!");
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const markAsDelivered = (id: string) => {
-    setDeliveries(prev => prev.map(d => d.id === id ? { ...d, status: 'DELIVERED' } : d));
-    setNotification("Status updated to DELIVERED!");
-    setTimeout(() => setNotification(null), 3000);
-  };
+  const filteredDeliveries = deliveries.filter(d => {
+    if (filter === 'PENDING') return d.status === 'PENDING';
+    if (filter === 'PAID') return d.payment_status === 'PAID' || d.payment_status === 'ADVANCED';
+    return true;
+  });
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
@@ -60,7 +66,11 @@ export default function HawkerDashboard() {
               DOWNLOAD_SETTLEMENT_CSV
             </button>
             <button 
-              onClick={handleMarkAttendance}
+              onClick={() => {
+                setAttendanceMarked(true);
+                setNotification("Attendance marked successfully!");
+                setTimeout(() => setNotification(null), 3000);
+              }}
               disabled={attendanceMarked}
               className={cn(
                 "flex items-center gap-2 px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg transition-all",
@@ -73,11 +83,40 @@ export default function HawkerDashboard() {
           </div>
         </header>
 
-        {/* Stats Summary */}
+        {/* Clickable Stats Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <StatCard title="TODAY_CASH_COLLECTION" value="₹1,650" icon={DollarSign} />
-          <StatCard title="DELIVERIES_COMPLETED" value={`${deliveries.filter(d => d.status === 'DELIVERED').length}/${deliveries.length}`} icon={CheckCircle2} />
-          <StatCard title="PENDING_TASKS" value={deliveries.filter(d => d.status === 'PENDING').length.toString()} icon={Clock} />
+          <div 
+            onClick={() => setFilter('PAID')}
+            className={cn("bg-white p-8 rounded-[2rem] border-2 transition-all cursor-pointer hover:scale-105", filter === 'PAID' ? "border-indigo-600 shadow-xl" : "border-slate-50 shadow-sm")}
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl"><DollarSign size={24} /></div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">CASH_COLLECTED</p>
+            </div>
+            <p className="text-4xl font-black text-slate-900 italic">₹1,650</p>
+          </div>
+
+          <div 
+            onClick={() => setFilter('ALL')}
+            className={cn("bg-white p-8 rounded-[2rem] border-2 transition-all cursor-pointer hover:scale-105", filter === 'ALL' ? "border-indigo-600 shadow-xl" : "border-slate-50 shadow-sm")}
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl"><CheckCircle2 size={24} /></div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">TOTAL_ROUTE_JOBS</p>
+            </div>
+            <p className="text-4xl font-black text-slate-900 italic">{deliveries.length}</p>
+          </div>
+
+          <div 
+            onClick={() => setFilter('PENDING')}
+            className={cn("bg-white p-8 rounded-[2rem] border-2 transition-all cursor-pointer hover:scale-105", filter === 'PENDING' ? "border-indigo-600 shadow-xl" : "border-slate-50 shadow-sm")}
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl"><Clock size={24} /></div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">PENDING_TASKS</p>
+            </div>
+            <p className="text-4xl font-black text-slate-900 italic">{deliveries.filter(d => d.status === 'PENDING').length}</p>
+          </div>
         </div>
 
         {/* Customer & Settlement List */}
@@ -85,27 +124,35 @@ export default function HawkerDashboard() {
           <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/20">
             <div className="flex items-center gap-3">
                <div className="p-2 bg-indigo-600 rounded-xl text-white shadow-lg"><Navigation size={20} /></div>
-               <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">SETTLEMENT_LOG: MY_CUSTOMERS</h2>
+               <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">SETTLEMENT_LOG: MY_CUSTOMERS {filter !== 'ALL' && `(${filter})`}</h2>
             </div>
+            {filter !== 'ALL' && <button onClick={() => setFilter('ALL')} className="text-[10px] font-black text-indigo-600 uppercase border border-indigo-100 px-4 py-2 rounded-xl hover:bg-indigo-50 transition-all">CLEAR_FILTER</button>}
           </div>
           
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-slate-50 text-[9px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/10">
-                  <th className="px-8 py-5">CUSTOMER_NAME / ID</th>
-                  <th className="px-8 py-5">DELIVERY_STATUS</th>
-                  <th className="px-8 py-5">PAYMENT_MODE</th>
+                  <th className="px-8 py-5">CUSTOMER_&_PROFILE</th>
+                  <th className="px-8 py-5">DELIVERY</th>
+                  <th className="px-8 py-5">PAYMENT_STATUS</th>
                   <th className="px-8 py-5">BILL_AMOUNT</th>
-                  <th className="px-8 py-5 text-right">ACTION</th>
+                  <th className="px-8 py-5 text-right">SETTLEMENT_ACTION</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {deliveries.map((item) => (
+                {filteredDeliveries.map((item) => (
                   <tr key={item.id} className="hover:bg-slate-50/50 transition-all group">
                     <td className="px-8 py-6">
-                      <p className="font-black text-slate-800 text-sm leading-none mb-1 uppercase italic tracking-tight">{item.name}</p>
-                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{item.id} | {item.address}</p>
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                           <UserCircle2 size={24} />
+                        </div>
+                        <div>
+                           <p className="font-black text-slate-800 text-sm leading-none mb-1 uppercase italic tracking-tight">{item.name}</p>
+                           <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{item.id} | {item.address}</p>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-2">
@@ -114,32 +161,44 @@ export default function HawkerDashboard() {
                             <CheckCircle2 size={10} /> DELIVERED
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1.5 text-[9px] font-black text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1 rounded-full uppercase tracking-widest">
+                          <span className="flex items-center gap-1.5 text-[9px] font-black text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1 rounded-full uppercase tracking-widest animate-pulse">
                             <Circle size={10} /> PENDING
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <div className="flex items-center gap-1.5 text-[10px] font-black">
-                        {item.pay_mode === 'CASH' ? (
-                          <div className="flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-xl uppercase tracking-widest border border-blue-100"><DollarSign size={10} /> CASH</div>
-                        ) : (
-                          <div className="flex items-center gap-1 bg-purple-50 text-purple-600 px-3 py-1 rounded-xl uppercase tracking-widest border border-purple-100"><CreditCard size={10} /> {item.pay_mode}</div>
-                        )}
+                      <div className="flex items-center gap-2">
+                         {item.payment_status === 'PAID' ? (
+                           <span className="flex items-center gap-1.5 text-[9px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full uppercase tracking-widest">
+                              <DollarSign size={10} /> PAID
+                           </span>
+                         ) : item.payment_status === 'ADVANCED' ? (
+                           <span className="flex items-center gap-1.5 text-[9px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full uppercase tracking-widest">
+                              <Wallet size={10} /> ADVANCED
+                           </span>
+                         ) : (
+                           <span className="flex items-center gap-1.5 text-[9px] font-black text-rose-600 bg-rose-50 border border-rose-100 px-3 py-1 rounded-full uppercase tracking-widest">
+                              <Clock size={10} /> PENDING
+                           </span>
+                         )}
+                         <span className="text-[8px] font-bold text-slate-400 uppercase italic">({item.pay_mode})</span>
                       </div>
                     </td>
                     <td className="px-8 py-6 font-black text-slate-900 italic tracking-tighter">₹{item.amount}</td>
                     <td className="px-8 py-6 text-right">
-                      {item.status === 'PENDING' ? (
+                      {item.payment_status === 'PENDING' ? (
                         <button 
-                          onClick={() => markAsDelivered(item.id)}
-                          className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-indigo-100 hover:scale-105 transition-all"
+                          onClick={() => markAsPaid(item.id)}
+                          className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-indigo-100 hover:scale-105 transition-all"
                         >
-                          MARK_DELIVERED
+                          MARK_PAID
                         </button>
                       ) : (
-                        <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">COMPLETED</span>
+                        <div className="flex justify-end items-center gap-2 text-emerald-500">
+                           <span className="text-[9px] font-black uppercase tracking-widest">SETTLED</span>
+                           <CheckCircle2 size={16} />
+                        </div>
                       )}
                     </td>
                   </tr>
@@ -151,8 +210,4 @@ export default function HawkerDashboard() {
       </main>
     </div>
   );
-}
-
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
 }
