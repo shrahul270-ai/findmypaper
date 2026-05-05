@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Users, Bike, Plus, Newspaper, ClipboardList, BookOpen, Camera,
   Wallet, TrendingUp, CheckCircle2, Clock, MapPin, Download, Search, 
-  MessageSquare, Check, X, Edit3, Image as ImageIcon, ShieldCheck, FileText, Send, Bell
+  MessageSquare, Check, X, Edit3, Image as ImageIcon, ShieldCheck, FileText, Send, Bell, ArrowRight
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
