@@ -22,7 +22,6 @@ const menuItems = {
   ],
   HAWKER: [
     { name: 'Deliveries', icon: Bike, href: '/hawker' },
-    { name: 'Attendance', icon: MapPin, href: '/hawker/attendance' },
     { name: 'My Profile', icon: User, href: '/hawker/profile' },
   ],
   CUSTOMER: [
