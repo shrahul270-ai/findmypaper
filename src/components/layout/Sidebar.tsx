@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, Users, Bike, Newspaper, CreditCard, 
-  Settings, LogOut, BookOpen, MapPin, User, Store, ClipboardList, ShieldCheck
+  Settings, LogOut, BookOpen, MapPin, User, Store, ClipboardList, ShieldCheck, History 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -48,7 +48,7 @@ export default function Sidebar({ role }: { role: keyof typeof menuItems }) {
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to Logout?")) {
-      window.location.href = '/'; // Direct redirect to Home/Login
+      window.location.href = '/'; 
     }
   };
 
