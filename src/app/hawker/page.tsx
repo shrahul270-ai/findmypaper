@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Camera, MapPin, CheckCircle2, Circle, Clock, Navigation, 
   Download, FileSpreadsheet, User, CreditCard, DollarSign, 
-  X, UserCircle2, Filter, ChevronRight, Wallet, Send, ArrowRight, Printer, ShieldCheck, Search, QrCode, Building2, Phone, Hash, Calendar, Tag, Edit3, Newspaper, TrendingUp, AlertCircle, Award, BookOpen, Layers, BarChart3
+  X, UserCircle2, Filter, ChevronRight, Wallet, Send, ArrowRight, Printer, ShieldCheck, Search, QrCode, Building2, Phone, Hash, Calendar, Tag, Edit3, Newspaper, TrendingUp, AlertCircle, Award, BookOpen, Layers, BarChart3, Activity
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
@@ -17,19 +17,14 @@ export default function HawkerDashboard() {
   
   const todayDate = "05 May 2026";
 
-  // Detailed Inventory Data
+  // Data
   const inventorySupply = [
     { type: 'PAPER', name: 'Dainik Bhaskar', qty: 45, agentPrice: 3.50, custPrice: 5.00, margin: 1.50 },
     { type: 'PAPER', name: 'Times of India', qty: 30, agentPrice: 4.00, custPrice: 6.00, margin: 2.00 },
     { type: 'MAGAZINE', name: 'India Today', qty: 12, agentPrice: 25.00, custPrice: 35.00, margin: 10.00 },
     { type: 'BOOK', name: 'NCRT Textbook', qty: 5, agentPrice: 180.00, custPrice: 220.00, margin: 40.00 },
-    { type: 'PAPER', name: 'Amar Ujala', qty: 25, agentPrice: 3.25, custPrice: 4.50, margin: 1.25 },
   ];
 
-  // Calculations
-  const totalQty = inventorySupply.reduce((acc, curr) => acc + curr.qty, 0);
-  const totalAgentCost = inventorySupply.reduce((acc, curr) => acc + (curr.qty * curr.agentPrice), 0);
-  const totalCustPrice = inventorySupply.reduce((acc, curr) => acc + (curr.qty * curr.custPrice), 0);
   const totalMarginToday = inventorySupply.reduce((acc, curr) => acc + (curr.qty * curr.margin), 0);
   const grandTotalEarnings = 15420.50 + totalMarginToday;
 
@@ -54,61 +49,61 @@ export default function HawkerDashboard() {
     <div className="flex min-h-screen bg-slate-50">
       <Sidebar role="HAWKER" />
       
-      <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
         {/* Navigation Tabs */}
-        <div className="flex bg-white p-1 rounded-2xl border border-slate-100 shadow-sm mb-6 overflow-x-auto scrollbar-hide">
+        <div className="flex bg-white p-1 rounded-2xl border border-slate-100 shadow-sm mb-8 overflow-x-auto scrollbar-hide max-w-2xl">
            {['DELIVERIES', 'SUPPLY', 'EARNINGS', 'ATTENDANCE'].map((tab) => (
-             <button key={tab} onClick={() => setActiveTab(tab as any)} className={cn("px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap", activeTab === tab ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100" : "text-slate-400 hover:text-slate-600")}>
+             <button key={tab} onClick={() => setActiveTab(tab as any)} className={cn("px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all", activeTab === tab ? "bg-indigo-600 text-white shadow-lg" : "text-slate-400 hover:text-slate-600")}>
                {tab === 'SUPPLY' ? 'INVENTORY' : tab}
              </button>
            ))}
         </div>
 
-        {/* Deliveries Section */}
+        {/* Deliveries Hub */}
         {activeTab === 'DELIVERIES' && (
           <div className="animate-in fade-in zoom-in duration-300">
-             <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+             <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                 <div>
-                  <p className="text-indigo-600 text-[10px] font-black uppercase tracking-widest mb-1 italic">DATE: {todayDate}</p>
-                  <h1 className="text-2xl font-black italic uppercase tracking-tighter text-slate-900">DELIVERY_TERMINAL</h1>
+                  <p className="text-indigo-600 text-[10px] font-black uppercase tracking-widest mb-1 italic flex items-center gap-2"><Calendar size={12} /> DATE: {todayDate}</p>
+                  <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900 leading-none">DELIVERY_TERMINAL</h1>
                 </div>
-                <div className="flex gap-3 w-full md:w-auto">
-                   <div className="relative flex-1 md:w-64">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-                      <input type="text" placeholder="SEARCH CUSTOMER..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-[9px] font-black uppercase shadow-sm focus:ring-2 focus:ring-indigo-600 outline-none" />
+                <div className="flex gap-4 w-full md:w-auto">
+                   <div className="relative flex-1 md:w-72">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
+                      <input type="text" placeholder="SEARCH CUSTOMER..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase shadow-sm outline-none focus:ring-2 focus:ring-indigo-600" />
                    </div>
-                   <button className="bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg">SUBMIT_CASH</button>
+                   <button className="bg-emerald-600 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl flex items-center gap-2"><Wallet size={16} /> SUBMIT_CASH</button>
                 </div>
              </header>
 
-             <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+             <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-slate-50 text-[8px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/20">
-                      <th className="px-6 py-4">CUSTOMER_DATA</th>
-                      <th className="px-6 py-4">BILL</th>
-                      <th className="px-6 py-4 text-right">PAYMENT_OPTION</th>
+                    <tr className="border-b border-slate-50 text-[9px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/20">
+                      <th className="px-8 py-5">CUSTOMER_DATA</th>
+                      <th className="px-8 py-5">BILL_AMOUNT</th>
+                      <th className="px-8 py-5 text-right">QUICK_ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                     {deliveries.filter(d => d.name.toLowerCase().includes(searchTerm.toLowerCase())).map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-50 transition-all">
-                        <td className="px-6 py-4 flex items-center gap-4">
-                           <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-black italic">F</div>
+                      <tr key={item.id} className="hover:bg-slate-50/50 transition-all group">
+                        <td className="px-8 py-6 flex items-center gap-4">
+                           <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 font-black italic group-hover:bg-indigo-600 group-hover:text-white transition-all"><User size={20} /></div>
                            <div>
-                              <p className="font-black text-slate-800 text-xs leading-none mb-1 uppercase italic">{item.name}</p>
-                              <p className="text-[8px] text-indigo-600 font-black uppercase tracking-widest">{item.paper}</p>
+                              <p className="font-black text-slate-800 text-sm leading-none mb-1 uppercase italic tracking-tight">{item.name}</p>
+                              <p className="text-[10px] text-indigo-600 font-black uppercase tracking-widest flex items-center gap-1"><Newspaper size={10} /> {item.paper}</p>
                            </div>
                         </td>
-                        <td className="px-6 py-4 font-black text-slate-900 text-sm italic">₹{item.amount}</td>
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-8 py-6 font-black text-slate-900 text-lg italic">₹{item.amount}</td>
+                        <td className="px-8 py-6 text-right">
                            {item.payment_status === 'PENDING' ? (
-                             <div className="flex justify-end gap-2">
-                                <button onClick={() => handleQuickPay(item.id, 'CASH')} className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-md">CASH</button>
-                                <button onClick={() => handleQuickPay(item.id, 'ONLINE')} className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-md">ONLINE</button>
+                             <div className="flex justify-end gap-3">
+                                <button onClick={() => handleQuickPay(item.id, 'CASH')} className="bg-emerald-500 text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all">CASH</button>
+                                <button onClick={() => handleQuickPay(item.id, 'ONLINE')} className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all">ONLINE</button>
                              </div>
                            ) : (
-                             <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest flex items-center justify-end gap-1"><CheckCircle2 size={12} /> PAID_{item.mode}</span>
+                             <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest flex items-center justify-end gap-2 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-100"><CheckCircle2 size={14} /> PAID_VIA_{item.mode}</span>
                            )}
                         </td>
                       </tr>
@@ -119,42 +114,51 @@ export default function HawkerDashboard() {
           </div>
         )}
 
-        {/* Inventory Section (Restored Detailed Version) */}
+        {/* Inventory Section (Detailed) */}
         {activeTab === 'SUPPLY' && (
           <div className="animate-in fade-in zoom-in duration-300">
-             <header className="mb-6">
-                <p className="text-indigo-600 text-[10px] font-black uppercase mb-1 italic">DATE: {todayDate}</p>
-                <h1 className="text-2xl font-black italic uppercase tracking-tighter text-slate-900">INVENTORY_SUPPLY</h1>
+             <header className="mb-10 flex justify-between items-center">
+                <div>
+                  <p className="text-indigo-600 text-[10px] font-black uppercase mb-1 italic flex items-center gap-2"><Calendar size={12} /> DATE: {todayDate}</p>
+                  <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">INVENTORY_REPORT</h1>
+                </div>
+                <div className="bg-white px-6 py-3 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                   <div className="text-right">
+                      <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">TOTAL_COPIES</p>
+                      <p className="text-sm font-black text-slate-900 italic leading-none">{inventorySupply.reduce((a,b) => a+b.qty, 0)}</p>
+                   </div>
+                   <Newspaper size={24} className="text-indigo-600" />
+                </div>
              </header>
-             <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+             <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-slate-50 text-[8px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/20">
-                      <th className="px-6 py-4">ITEM_NAME</th>
-                      <th className="px-6 py-4">QTY</th>
-                      <th className="px-6 py-4 text-indigo-600">AGENT_CP</th>
-                      <th className="px-6 py-4 text-emerald-600">CUST_SP</th>
-                      <th className="px-6 py-4 text-right">NET_MARGIN</th>
+                    <tr className="border-b border-slate-50 text-[9px] uppercase font-black tracking-widest text-slate-400 bg-slate-50/20">
+                      <th className="px-8 py-5">ITEM_NAME</th>
+                      <th className="px-8 py-5">QTY</th>
+                      <th className="px-8 py-5 text-indigo-600">AGENT_COST</th>
+                      <th className="px-8 py-5 text-emerald-600">CUSTOMER_SP</th>
+                      <th className="px-8 py-5 text-right">NET_MARGIN</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                     {inventorySupply.map((p) => (
-                      <tr key={p.name} className="hover:bg-slate-50">
-                        <td className="px-6 py-4 font-black text-slate-800 text-xs italic uppercase">{p.name}</td>
-                        <td className="px-6 py-4 font-black text-slate-500 text-[10px]">{p.qty}</td>
-                        <td className="px-6 py-4 font-black text-indigo-600 text-xs italic">₹{p.agentPrice}</td>
-                        <td className="px-6 py-4 font-black text-emerald-600 text-xs italic">₹{p.custPrice}</td>
-                        <td className="px-6 py-4 text-right font-black text-slate-900 text-sm italic">₹{(p.qty * p.margin).toFixed(2)}</td>
+                      <tr key={p.name} className="hover:bg-slate-50 transition-all">
+                        <td className="px-8 py-6 font-black text-slate-800 text-sm italic uppercase tracking-tight">{p.name}</td>
+                        <td className="px-8 py-6 font-black text-slate-500 text-xs">{p.qty}</td>
+                        <td className="px-8 py-6 font-black text-indigo-600 text-xs italic">₹{p.agentPrice}</td>
+                        <td className="px-8 py-6 font-black text-emerald-600 text-xs italic">₹{p.custPrice}</td>
+                        <td className="px-8 py-6 text-right font-black text-slate-900 text-lg italic tracking-tighter">₹{(p.qty * p.margin).toFixed(2)}</td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot className="bg-slate-900 text-white">
                      <tr className="font-black italic uppercase tracking-tighter">
-                        <td className="px-6 py-5 text-sm">GRAND_TOTAL</td>
-                        <td className="px-6 py-5 text-[10px] text-slate-400">{totalQty}</td>
-                        <td className="px-6 py-5 text-indigo-400">₹{totalAgentCost.toFixed(2)}</td>
-                        <td className="px-6 py-5 text-emerald-400">₹{totalCustPrice.toFixed(2)}</td>
-                        <td className="px-6 py-5 text-right text-lg text-emerald-400">₹{totalMarginToday.toFixed(2)}</td>
+                        <td className="px-8 py-6 text-base">GRAND_TOTAL</td>
+                        <td className="px-8 py-6 text-xs text-slate-400">{inventorySupply.reduce((a,b) => a+b.qty, 0)}</td>
+                        <td className="px-8 py-6 text-indigo-400 italic">₹{inventorySupply.reduce((a,b) => a+(b.qty*b.agentPrice), 0).toFixed(2)}</td>
+                        <td className="px-8 py-6 text-emerald-400 italic">₹{inventorySupply.reduce((a,b) => a+(b.qty*b.custPrice), 0).toFixed(2)}</td>
+                        <td className="px-8 py-6 text-right text-2xl text-emerald-400 italic">₹{totalMarginToday.toFixed(2)}</td>
                      </tr>
                   </tfoot>
                 </table>
@@ -162,58 +166,123 @@ export default function HawkerDashboard() {
           </div>
         )}
 
-        {/* Earnings Section (Restored Detailed Version) */}
+        {/* Earnings Section (Polished) */}
         {activeTab === 'EARNINGS' && (
-           <div className="animate-in fade-in zoom-in duration-300 space-y-6">
-              <header className="mb-2"><p className="text-indigo-600 text-[10px] font-black uppercase mb-1 italic">DATE: {todayDate}</p><h1 className="text-2xl font-black italic uppercase tracking-tighter text-slate-900">FINANCIAL_REPORT</h1></header>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><Clock size={12} /> TODAY_NET_EARNING</p>
-                    <p className="text-4xl font-black italic tracking-tighter text-slate-900">₹{totalMarginToday.toFixed(2)}</p>
+           <div className="animate-in fade-in zoom-in duration-300 space-y-8">
+              <header className="mb-2">
+                 <p className="text-indigo-600 text-[10px] font-black uppercase mb-1 italic flex items-center gap-2"><Calendar size={12} /> DATE: {todayDate}</p>
+                 <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">FINANCIAL_ANALYTICS</h1>
+              </header>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-xl relative overflow-hidden group">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><Clock size={14} /> TODAY_NET_PROFIT</p>
+                    <p className="text-5xl font-black italic tracking-tighter text-slate-900">₹{totalMarginToday.toFixed(2)}</p>
+                    <div className="mt-8 flex items-center gap-3">
+                       <div className="w-10 h-1 bg-emerald-500 rounded-full"></div>
+                       <p className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">+12% vs YESTERDAY</p>
+                    </div>
+                    <Activity className="absolute -right-4 -bottom-4 w-32 h-32 text-slate-50" />
                  </div>
-                 <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden">
-                    <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-2 flex items-center gap-2"><TrendingUp size={12} /> RUNNING_MONTHLY_TOTAL</p>
-                    <p className="text-4xl font-black italic tracking-tighter text-emerald-400">₹{grandTotalEarnings.toFixed(2)}</p>
-                    <BarChart3 className="absolute -right-6 -bottom-6 w-24 h-24 opacity-10" />
+                 <div className="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><TrendingUp size={14} /> MONTHLY_RUNNING_TOTAL</p>
+                    <p className="text-5xl font-black italic tracking-tighter text-emerald-400">₹{grandTotalEarnings.toFixed(2)}</p>
+                    <div className="mt-8 flex items-center gap-3">
+                       <div className="w-10 h-1 bg-indigo-500 rounded-full"></div>
+                       <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">ON_TRACK_FOR_TARGET</p>
+                    </div>
+                    <BarChart3 className="absolute -right-6 -bottom-6 w-40 h-40 opacity-10 rotate-12" />
+                 </div>
+              </div>
+
+              {/* Added Historical Breakdown to fill space */}
+              <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl p-10">
+                 <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mb-8">DAILY_PROFIT_TIMELINE</p>
+                 <div className="space-y-6">
+                    {[
+                      { date: '04 May 2026', amt: '₹3,920.00', status: 'COMPLETE' },
+                      { date: '03 May 2026', amt: '₹4,150.50', status: 'COMPLETE' },
+                      { date: '02 May 2026', amt: '₹3,780.25', status: 'COMPLETE' },
+                    ].map((log, i) => (
+                      <div key={i} className="flex justify-between items-center p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-600 transition-all">
+                         <div className="flex items-center gap-4">
+                            <div className="w-2 h-2 bg-indigo-600 rounded-full shadow-sm shadow-indigo-200"></div>
+                            <p className="text-[11px] font-black text-slate-800 uppercase italic">{log.date}</p>
+                         </div>
+                         <div className="text-right">
+                            <p className="text-lg font-black text-slate-900 italic">{log.amt}</p>
+                            <span className="text-[8px] font-black text-emerald-500 uppercase tracking-widest">{log.status}</span>
+                         </div>
+                      </div>
+                    ))}
                  </div>
               </div>
            </div>
         )}
 
-        {/* Attendance Section (Restored & Updated Status) */}
+        {/* Attendance Section (Polished) */}
         {activeTab === 'ATTENDANCE' && (
-           <div className="animate-in fade-in zoom-in duration-300 min-h-[300px] flex items-center justify-center bg-white rounded-[2rem] border border-slate-100 shadow-sm">
-              <div className="text-center">
-                 <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-100"><CheckCircle2 size={32} /></div>
-                 <h3 className="text-lg font-black text-slate-900 uppercase italic tracking-tighter">PRESENT_LOGGED</h3>
-                 <p className="text-[9px] font-black text-emerald-600 uppercase tracking-widest mt-1 border-b border-emerald-100 pb-1 inline-block">VERIFIED_BY_AGENT</p>
-                 <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-2">{todayDate} | 05:30 AM</p>
+           <div className="animate-in fade-in zoom-in duration-300 space-y-8">
+              <header className="mb-2">
+                 <p className="text-indigo-600 text-[10px] font-black uppercase mb-1 italic flex items-center gap-2"><Calendar size={12} /> DATE: {todayDate}</p>
+                 <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">ATTENDANCE_TERMINAL</h1>
+              </header>
+
+              <div className="bg-white rounded-[3rem] border border-slate-100 shadow-2xl p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                 <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-[2rem] flex items-center justify-center mb-8 border-2 border-emerald-100 shadow-xl shadow-emerald-50/50 animate-pulse">
+                    <CheckCircle2 size={48} />
+                 </div>
+                 <h3 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter mb-4">PRESENT_&_LOGGED</h3>
+                 <div className="flex items-center gap-3 bg-emerald-500 text-white px-6 py-2.5 rounded-2xl shadow-xl shadow-emerald-500/20 mb-8">
+                    <ShieldCheck size={18} />
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">VERIFIED_BY_AGENT</span>
+                 </div>
+                 <div className="grid grid-cols-2 gap-8 w-full max-w-md border-t border-slate-100 pt-10">
+                    <div>
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">CHECK_IN_TIME</p>
+                       <p className="text-xl font-black text-slate-900 italic">05:30 AM</p>
+                    </div>
+                    <div>
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">LOCATION_ID</p>
+                       <p className="text-xl font-black text-slate-900 italic">DEPOT_04_NORTH</p>
+                    </div>
+                 </div>
+                 <Building2 className="absolute -left-10 -bottom-10 w-48 h-48 text-slate-50 -rotate-12" />
               </div>
            </div>
         )}
       </main>
 
-      {/* Online Scanner Modal Restored */}
+      {/* Online Scanner Modal Fix (Added padding-bottom) */}
       {selectedOnline && (
         <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[110] p-4">
-          <div className="bg-white max-w-sm w-full rounded-[2rem] p-8 shadow-2xl relative animate-scale-in flex flex-col max-h-[85vh] overflow-hidden text-center">
-             <button onClick={() => setSelectedOnline(null)} className="absolute top-6 right-6 text-slate-300 hover:text-slate-900"><X size={20} /></button>
-             <div className="mb-6 border-b border-dashed pb-4">
-                <h2 className="text-lg font-black text-slate-900 uppercase italic tracking-tighter">ONLINE_TERMINAL</h2>
-                <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-1">{selectedOnline.name}</p>
-             </div>
-             <div className="animate-in fade-in zoom-in duration-500 mb-6 flex flex-col items-center">
-                <div className="bg-slate-50 w-44 h-44 rounded-2xl border-4 border-white shadow-lg flex items-center justify-center"><QrCode size={100} className="text-slate-800" /></div>
-                <p className="mt-4 text-[9px] font-black text-indigo-600 uppercase tracking-widest">SCAN_AGENT_QR</p>
-             </div>
-             <div className="bg-slate-900 p-6 rounded-2xl mb-6 text-center shadow-xl">
-                <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-3">VERIFY_AMOUNT</p>
-                <div className="flex items-center justify-center gap-2">
-                   <span className="text-2xl font-black text-indigo-500 italic">₹</span>
-                   <input type="number" value={editableAmount} onChange={(e) => setEditableAmount(e.target.value)} className="bg-transparent text-2xl font-black text-white italic outline-none w-24 tracking-tighter" />
+          <div className="bg-white max-w-sm w-full rounded-[3rem] p-8 md:p-10 shadow-2xl relative animate-scale-in flex flex-col max-h-[90vh] overflow-hidden">
+             <button onClick={() => setSelectedOnline(null)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors z-20"><X size={24} /></button>
+             <div className="overflow-y-auto pr-2 scrollbar-hide flex-1 text-center">
+                <div className="mb-8 border-b border-dashed pb-6">
+                   <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter leading-none mb-2">ONLINE_TERMINAL</h2>
+                   <p className="text-[11px] font-black text-indigo-600 uppercase tracking-widest">{selectedOnline.name}</p>
+                </div>
+                <div className="animate-in fade-in zoom-in duration-500 mb-10 flex flex-col items-center">
+                   <div className="bg-slate-50 w-48 h-48 rounded-[2rem] border-4 border-white shadow-2xl flex items-center justify-center relative overflow-hidden group">
+                      <QrCode size={110} className="text-slate-800" />
+                      <div className="absolute inset-0 bg-indigo-600/5 group-hover:opacity-0 transition-all"></div>
+                   </div>
+                   <p className="mt-5 text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] animate-pulse">SCAN_AGENT_QR_CODE</p>
+                </div>
+                <div className="bg-slate-900 p-8 rounded-[2.5rem] mb-10 shadow-xl relative overflow-hidden group">
+                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">VERIFY_BILL_AMOUNT</p>
+                   <div className="flex items-center justify-center gap-3">
+                      <span className="text-3xl font-black text-indigo-500 italic">₹</span>
+                      <input type="number" value={editableAmount} onChange={(e) => setEditableAmount(e.target.value)} className="bg-transparent text-3xl font-black text-white italic outline-none w-24 tracking-tighter" />
+                   </div>
                 </div>
              </div>
-             <button onClick={() => { setDeliveries(prev => prev.map(d => d.id === selectedOnline.id ? {...d, payment_status: 'PAID', mode: 'ONLINE'} : d)); setSelectedOnline(null); }} className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase shadow-2xl">CONFIRM_PAYMENT</button>
+             {/* Bottom Padding added to ensure button is visible */}
+             <div className="pt-4 pb-4">
+                <button onClick={confirmOnlinePayment} className="w-full bg-indigo-600 text-white py-5 rounded-[2rem] font-black text-[11px] tracking-[0.2em] uppercase shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+                   <ShieldCheck size={18} /> CONFIRM_ONLINE_PAYMENT
+                </button>
+             </div>
           </div>
         </div>
       )}
