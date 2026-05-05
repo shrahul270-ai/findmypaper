@@ -1,148 +1,123 @@
-import React from 'react';
-import { Users, DollarSign, Wallet, FileText, AlertCircle, ArrowUpRight, Store } from 'lucide-react';
-import StatCard from '@/components/ui/StatCard';
+"use client";
+
+import React, { useState } from 'react';
+import { 
+  LayoutDashboard, Users, Bike, Newspaper, CreditCard, 
+  Settings, Search, CheckCircle2, XCircle, Clock, 
+  ArrowUpRight, History, ShieldCheck, Download, 
+  Filter, UserCircle2, BarChart3, TrendingUp, DollarSign,
+  AlertCircle, Activity
+} from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeView, setActiveView] = useState<'OVERVIEW' | 'HISTORY'>('OVERVIEW');
+
+  // Global Transaction Data
+  const [allTransactions] = useState([
+    { id: 'TX501', hawker: 'Rahul Sharma', customer: 'Anil Mehta', amount: 450, status: 'PAID', time: '10:30 AM', agent: 'Amit Singh' },
+    { id: 'TX502', hawker: 'Rahul Sharma', customer: 'Suresh Kumar', amount: 320, status: 'PENDING', time: '11:15 AM', agent: 'Amit Singh' },
+    { id: 'TX503', hawker: 'Sunil Verma', customer: 'Priya Dhar', amount: 500, status: 'REJECTED', reason: 'Fake Screenshot', time: '09:00 AM', agent: 'Amit Singh' },
+    { id: 'TX504', hawker: 'Amit Gupta', customer: 'Daily Store', amount: 1200, status: 'PAID', time: 'Yesterday', agent: 'Sanjay Kumar' },
+  ]);
+
+  const filteredHistory = allTransactions.filter(tx => 
+    tx.hawker.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    tx.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tx.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="flex min-h-screen bg-[var(--background)]">
+    <div className="flex min-h-screen bg-slate-50">
       <Sidebar role="ADMIN" />
       
-      <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
           <div>
-            <p className="text-[var(--primary)] text-xs font-bold tracking-[0.2em]">PROTOCOL: ADMIN_CENTRAL</p>
-            <h1 className="text-3xl font-bold tracking-tighter">NETWORK_OVERVIEW</h1>
+            <p className="text-indigo-600 text-[10px] font-black uppercase tracking-[0.2em] mb-1 italic">SUPER_ADMIN_CONSOLE</p>
+            <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900 leading-none">SYSTEM_GRAND_AUDIT</h1>
           </div>
-          
-          <div className="flex gap-4">
-            <div className="bg-[var(--surface)] border border-[var(--divider)] px-4 py-2 flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="text-xs font-bold tracking-widest text-gray-400">CORE_ENGINE: ONLINE</span>
-            </div>
-            <button className="bg-[var(--primary)] text-black px-4 py-2 text-xs font-bold tracking-widest hover:opacity-90 transition-all">
-              GENERATE_MONTHLY_BILLS
-            </button>
+          <div className="flex gap-4 w-full md:w-auto">
+             <div className="relative flex-1 md:w-80">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                <input 
+                  type="text" 
+                  placeholder="SEARCH HAWKER, CUSTOMER, TX_ID..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase shadow-sm outline-none focus:ring-2 focus:ring-indigo-600"
+                />
+             </div>
           </div>
         </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard 
-            title="TOTAL_REVENUE" 
-            value="₹4,52,390" 
-            change="12.5%" 
-            isPositive={true} 
-            icon={DollarSign} 
-          />
-          <StatCard 
-            title="PENDING_VERIFICATION" 
-            value="42" 
-            change="5" 
-            isPositive={false} 
-            icon={AlertCircle} 
-          />
-          <StatCard 
-            title="ACTIVE_AGENTS" 
-            value="128" 
-            change="2.4%" 
-            isPositive={true} 
-            icon={Store} 
-          />
-          <StatCard 
-            title="TOTAL_CUSTOMERS" 
-            value="12,450" 
-            change="156" 
-            isPositive={true} 
-            icon={Users} 
-          />
+        {/* Global Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+              <div className="flex justify-between items-start mb-4">
+                 <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center"><DollarSign size={20} /></div>
+                 <span className="text-[8px] font-black text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full">+18%</span>
+              </div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">TOTAL_REVENUE</p>
+              <p className="text-3xl font-black text-slate-900 italic tracking-tighter">₹4,85,200</p>
+           </div>
+           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+              <div className="flex justify-between items-start mb-4">
+                 <div className="w-10 h-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center"><AlertCircle size={20} /></div>
+                 <span className="text-[8px] font-black text-rose-500 bg-rose-50 px-3 py-1 rounded-full">ACTION REQ</span>
+              </div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">REJECTED_BILLS</p>
+              <p className="text-3xl font-black text-slate-900 italic tracking-tighter">42</p>
+           </div>
+           <div className="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden">
+              <div className="relative z-10">
+                 <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">ACTIVE_HAWKERS</p>
+                 <p className="text-3xl font-black italic tracking-tighter text-emerald-400">128</p>
+              </div>
+              <Activity className="absolute -right-4 -bottom-4 w-24 h-24 opacity-10" />
+           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Recent Activity / Pending Payments */}
-          <div className="lg:col-span-2 bg-[var(--surface)] border border-[var(--divider)] rounded-lg overflow-hidden">
-            <div className="p-4 border-b border-[var(--divider)] flex justify-between items-center bg-[var(--surface-2)]">
-              <h2 className="text-sm font-bold tracking-widest">RECENT_PAYMENT_REQUESTS</h2>
-              <button className="text-[var(--primary)] text-[10px] font-bold hover:underline">VIEW_ALL</button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-[var(--divider)] text-gray-500 text-[10px] uppercase font-bold tracking-widest">
-                    <th className="px-6 py-4">ID</th>
-                    <th className="px-6 py-4">CUSTOMER</th>
-                    <th className="px-6 py-4">AGENT</th>
-                    <th className="px-6 py-4">AMOUNT</th>
-                    <th className="px-6 py-4">STATUS</th>
-                    <th className="px-6 py-4">ACTION</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--divider)]">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <tr key={i} className="hover:bg-[var(--surface-2)] transition-colors group">
-                      <td className="px-6 py-4 font-mono text-gray-400">#PAY-{1000 + i}</td>
-                      <td className="px-6 py-4 font-bold">Rahul Sharma</td>
-                      <td className="px-6 py-4 text-gray-400">Metro Agency</td>
-                      <td className="px-6 py-4 text-[var(--primary)] font-bold">₹{450 * i}.00</td>
-                      <td className="px-6 py-4">
-                        <span className="px-2 py-1 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 text-[9px] font-bold tracking-tighter uppercase">
-                          PENDING
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <button className="text-gray-400 hover:text-[var(--primary)] transition-colors">
-                          <ArrowUpRight size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+        {/* Global Transaction History (PhonePe Style) */}
+        <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl overflow-hidden p-8">
+           <div className="flex justify-between items-center mb-8">
+              <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter flex items-center gap-2"><History size={20} className="text-indigo-600" /> GLOBAL_TRANSACTION_LOG</h2>
+              <button className="text-[9px] font-black text-indigo-600 uppercase tracking-widest border-b-2 border-indigo-600 pb-1">DOWNLOAD_EXCEL</button>
+           </div>
 
-          {/* Quick Stats / Wallet Info */}
-          <div className="space-y-6">
-            <div className="bg-[var(--surface)] border border-[var(--divider)] p-6 rounded-lg">
-              <h2 className="text-sm font-bold tracking-widest mb-4">SYSTEM_HEALTH</h2>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-[10px] font-bold mb-1">
-                    <span className="text-gray-400">AGENT_WALLET_TOTAL</span>
-                    <span>₹12,45,000</span>
-                  </div>
-                  <div className="w-full bg-[var(--divider)] h-1">
-                    <div className="bg-[var(--primary)] h-1 w-[75%]"></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-[10px] font-bold mb-1">
-                    <span className="text-gray-400">HAWKER_ATTENDANCE</span>
-                    <span>94%</span>
-                  </div>
-                  <div className="w-full bg-[var(--divider)] h-1">
-                    <div className="bg-[var(--primary)] h-1 w-[94%]"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+           <div className="space-y-6">
+              {filteredHistory.map((tx, i) => (
+                 <div key={i} className="flex flex-col md:flex-row justify-between md:items-center p-6 border-b border-slate-50 hover:bg-slate-50 transition-all rounded-3xl group">
+                    <div className="flex items-center gap-5 mb-4 md:mb-0">
+                       <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm", 
+                          tx.status === 'PAID' ? "bg-emerald-50 text-emerald-600" : 
+                          tx.status === 'REJECTED' ? "bg-rose-50 text-rose-600" : "bg-indigo-50 text-indigo-600"
+                       )}>
+                          {tx.status === 'PAID' ? <CheckCircle2 size={24} /> : tx.status === 'REJECTED' ? <XCircle size={24} /> : <Clock size={24} />}
+                       </div>
+                       <div>
+                          <p className="font-black text-slate-900 uppercase italic text-base tracking-tighter">{tx.customer}</p>
+                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">HAWKER: {tx.hawker} | AGENT: {tx.agent}</p>
+                       </div>
+                    </div>
 
-            <div className="bg-[var(--primary-glow)] border border-[var(--primary)] p-6 rounded-lg">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-black rounded-md">
-                  <Wallet className="text-[var(--primary)]" size={20} />
-                </div>
-                <h2 className="text-sm font-bold tracking-widest text-[var(--primary)]">AGENT_SETTLEMENT</h2>
-              </div>
-              <p className="text-xs text-gray-400 mb-4 font-mono">Total pending withdrawal requests from agents requiring immediate attention.</p>
-              <div className="flex justify-between items-end">
-                <span className="text-2xl font-bold">12</span>
-                <button className="bg-[var(--primary)] text-black px-3 py-1 text-[9px] font-black tracking-widest uppercase">
-                  REVIEW_REQUESTS
-                </button>
-              </div>
-            </div>
-          </div>
+                    <div className="flex flex-row md:flex-col justify-between items-end gap-1">
+                       <p className="text-xl font-black text-slate-900 italic tracking-tighter">₹{tx.amount}</p>
+                       <div className="flex items-center gap-2">
+                          <span className={cn("text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full", 
+                             tx.status === 'PAID' ? "text-emerald-600 bg-emerald-50" : 
+                             tx.status === 'REJECTED' ? "text-rose-600 bg-rose-50" : "text-indigo-600 bg-indigo-50"
+                          )}>
+                             {tx.status}
+                          </span>
+                          <span className="text-[8px] font-black text-slate-400 uppercase">{tx.time}</span>
+                       </div>
+                    </div>
+                 </div>
+              ))}
+           </div>
         </div>
       </main>
     </div>
