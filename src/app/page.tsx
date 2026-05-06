@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield, Key, Mail, Smartphone, ArrowRight, Loader2, UserPlus, HelpCircle, X } from 'lucide-react';
 
@@ -11,24 +11,17 @@ export default function AuthPage() {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const router = useRouter();
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) value = value.slice(-1);
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-
-    // Auto-focus next input
-    if (value && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
+    if (value && index < 5) inputRefs.current[index + 1]?.focus();
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
+    if (e.key === 'Backspace' && !otp[index] && index > 0) inputRefs.current[index - 1]?.focus();
   };
 
   const handleAction = async (e: React.FormEvent) => {
@@ -43,8 +36,7 @@ export default function AuthPage() {
     } else {
       setTimeout(() => {
         setLoading(false);
-        const target = role.toLowerCase();
-        window.location.href = `/${target}`;
+        window.location.href = `/${role.toLowerCase()}`;
       }, 1000);
     }
   };
@@ -64,12 +56,10 @@ export default function AuthPage() {
         <div className="bg-white border border-slate-100 p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.05)] relative overflow-hidden">
           <div className="mb-10 text-center md:text-left">
             <h2 className="text-2xl font-black text-slate-900 italic uppercase tracking-tight">
-              {view === 'LOGIN' && 'Sign_In'}
-              {view === 'OTP' && 'Verify_Identity'}
+              {view === 'LOGIN' ? 'Sign_In' : 'Verify_Identity'}
             </h2>
             <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">
-              {view === 'LOGIN' && 'Enter credentials to access portal'}
-              {view === 'OTP' && 'Auto-Forwarding OTP System Active'}
+              {view === 'LOGIN' ? 'Enter credentials to access portal' : 'Auto-Forwarding OTP System Active'}
             </p>
           </div>
 
@@ -88,6 +78,20 @@ export default function AuthPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full pl-14 pr-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-600 text-xs font-bold uppercase italic" 
+                    />
+                  </div>
+                </div>
+
+                {/* RESTORED PASSWORD FIELD */}
+                <div className="space-y-2">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest px-2">Secure Password</label>
+                  <div className="relative">
+                    <Key className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
+                    <input 
+                      type="password" 
+                      placeholder="••••••••" 
+                      required 
+                      className="w-full pl-14 pr-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-600 text-xs font-bold" 
                     />
                   </div>
                 </div>
