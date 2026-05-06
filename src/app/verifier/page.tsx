@@ -6,7 +6,7 @@ import {
   Building2, Bike, Newspaper, CheckCircle2, XCircle, 
   Clock, ArrowUpRight, ArrowDownLeft, MoreVertical,
   Mail, Hash, Calendar, DollarSign, Wallet, AlertCircle, X, PhoneCall, RefreshCw,
-  Image as ImageIcon, Eye, ShieldCheck, Settings2, Share2
+  Image as ImageIcon, Eye, ShieldCheck, Settings2, Share2, Menu
 } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
@@ -61,22 +61,22 @@ export default function VerifierDashboard() {
   );
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#F8FAFC]">
       <Sidebar role="VERIFIER" />
       
-      <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
-        {/* Professional Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-          <div>
+      <main className="flex-1 p-4 md:p-10 max-w-7xl mx-auto w-full overflow-x-hidden">
+        {/* Professional Header - Responsive */}
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 md:mb-12">
+          <div className="w-full">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full"></div>
               <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Audit Terminal v9.5</p>
             </div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight italic">VERIFIER_CONSOLE</h1>
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight italic">VERIFIER_CONSOLE</h1>
           </div>
           
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <div className="relative flex-1 md:w-80 text-slate-900">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <div className="relative w-full sm:w-80 text-slate-900">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
               <input 
                 type="text" 
@@ -86,23 +86,21 @@ export default function VerifierDashboard() {
                 className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
               />
             </div>
-            <button onClick={handleWhatsAppShare} className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-black text-[10px] tracking-widest uppercase flex items-center gap-2 hover:bg-emerald-700 shadow-lg shadow-emerald-100 transition-all">
+            <button onClick={handleWhatsAppShare} className="w-full sm:w-auto bg-emerald-600 text-white px-6 py-3 rounded-xl font-black text-[10px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-emerald-700 shadow-lg shadow-emerald-100 transition-all">
               <Share2 size={16} /> DISPATCH
             </button>
           </div>
         </header>
 
-        {/* Action Controls & Column Manager */}
+        {/* Action Controls & Column Manager - Responsive */}
         <div className="flex justify-between items-center mb-6 px-2">
-           <div className="flex items-center gap-3">
-              <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest italic underline decoration-indigo-500 underline-offset-4">Transaction Queue</h2>
-           </div>
+           <h2 className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest italic underline decoration-indigo-500 underline-offset-4">Transaction Queue</h2>
            <div className="relative">
               <button 
                 onClick={() => setShowColumnSettings(!showColumnSettings)}
                 className={cn("p-2 rounded-lg border border-slate-200 hover:bg-slate-100 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest", showColumnSettings ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600")}
               >
-                 <Settings2 size={14} /> Column_Settings
+                 <Settings2 size={14} /> <span className="hidden sm:inline">Column_Settings</span>
               </button>
               
               {showColumnSettings && (
@@ -126,26 +124,26 @@ export default function VerifierDashboard() {
            </div>
         </div>
 
-        {/* Clean Professional Table */}
-        <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm shadow-slate-200/50">
-           <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+        {/* Clean Professional Table - Horizontal Scroll on Mobile */}
+        <div className="bg-white border border-slate-200 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm shadow-slate-200/50">
+           <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
                  <thead>
                     <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                       <th className="px-8 py-5">Customer Profile</th>
+                       <th className="px-6 md:px-8 py-5">Customer Profile</th>
                        {visibleColumns.id && <th className="px-6 py-5">User_ID</th>}
                        {visibleColumns.phone && <th className="px-6 py-5">Mobile</th>}
                        {visibleColumns.addedBy && <th className="px-6 py-5">Added_By</th>}
                        {visibleColumns.paper && <th className="px-6 py-5">Paper/Items</th>}
                        {visibleColumns.amount && <th className="px-6 py-5 text-right">Amount</th>}
                        {visibleColumns.utr && <th className="px-6 py-5">UTR_ID</th>}
-                       <th className="px-8 py-5 text-right">Audit_Action</th>
+                       <th className="px-6 md:px-8 py-5 text-right">Audit_Action</th>
                     </tr>
                  </thead>
                  <tbody className="divide-y divide-slate-50">
                     {filteredTransactions.map((tx) => (
                        <tr key={tx.id} className="hover:bg-slate-50/50 transition-all group">
-                          <td className="px-8 py-6">
+                          <td className="px-6 md:px-8 py-6">
                              <p className="font-bold text-slate-900 text-sm italic">{tx.name}</p>
                              {visibleColumns.email && <p className="text-[10px] text-slate-400 font-medium">{tx.email}</p>}
                           </td>
@@ -159,8 +157,8 @@ export default function VerifierDashboard() {
                           )}
                           {visibleColumns.amount && <td className="px-6 py-6 text-base font-black text-slate-900 text-right italic">₹{tx.amount}</td>}
                           {visibleColumns.utr && <td className="px-6 py-6 text-[10px] font-mono text-slate-400">{tx.utr}</td>}
-                          <td className="px-8 py-6 text-right">
-                             <div className="flex justify-end gap-3">
+                          <td className="px-6 md:px-8 py-6 text-right">
+                             <div className="flex justify-end gap-2 md:gap-3">
                                 <button onClick={() => { setSelectedTx(tx); setShowProofModal(true); }} className="w-10 h-10 bg-slate-900 text-white rounded-xl shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center"><Eye size={18}/></button>
                                 {tx.status === 'PENDING' && (
                                    <>
@@ -178,26 +176,26 @@ export default function VerifierDashboard() {
         </div>
       </main>
 
-      {/* Proof Modal */}
+      {/* Proof Modal - Responsive */}
       {showProofModal && (
-        <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4 text-slate-900">
-           <div className="bg-white max-w-2xl w-full rounded-[3rem] p-8 shadow-2xl relative animate-in zoom-in duration-300">
-              <button onClick={() => setShowProofModal(false)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><XCircle size={32}/></button>
-              <div className="flex flex-col md:flex-row gap-8">
-                 <div className="flex-1 bg-slate-100 rounded-3xl overflow-hidden shadow-inner flex items-center justify-center min-h-[400px]">
+        <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4 text-slate-900 overflow-y-auto">
+           <div className="bg-white max-w-2xl w-full rounded-2xl md:rounded-[3rem] p-6 md:p-8 shadow-2xl relative animate-in zoom-in duration-300 my-auto">
+              <button onClick={() => setShowProofModal(false)} className="absolute top-4 right-4 md:top-8 md:right-8 text-slate-300 hover:text-slate-900 transition-colors"><XCircle size={24} md:size={32}/></button>
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+                 <div className="w-full md:flex-1 bg-slate-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-inner flex items-center justify-center min-h-[300px] md:min-h-[400px]">
                     <img src={selectedTx?.proof} alt="Proof" className="w-full h-full object-cover" />
                  </div>
-                 <div className="flex-1 flex flex-col justify-between py-4">
-                    <div className="space-y-6">
-                       <h2 className="text-3xl font-black text-slate-900 italic uppercase tracking-tighter">{selectedTx?.name}</h2>
-                       <div className="bg-slate-50 p-6 rounded-2xl space-y-3">
-                          <div className="flex justify-between items-center"><span className="text-[9px] font-black text-slate-400 uppercase">Amount</span><span className="text-xl font-black text-slate-900 italic">₹{selectedTx?.amount}</span></div>
-                          <div className="flex justify-between items-center"><span className="text-[9px] font-black text-slate-400 uppercase">UTR_ID</span><span className="text-[10px] font-mono text-indigo-600">{selectedTx?.utr}</span></div>
+                 <div className="w-full md:flex-1 flex flex-col justify-between py-2 md:py-4">
+                    <div className="space-y-4 md:space-y-6">
+                       <h2 className="text-2xl md:text-3xl font-black text-slate-900 italic uppercase tracking-tighter">{selectedTx?.name}</h2>
+                       <div className="bg-slate-50 p-4 md:p-6 rounded-xl md:rounded-2xl space-y-3">
+                          <div className="flex justify-between items-center"><span className="text-[9px] font-black text-slate-400 uppercase">Amount</span><span className="text-lg md:text-xl font-black text-slate-900 italic">₹{selectedTx?.amount}</span></div>
+                          <div className="flex justify-between items-center"><span className="text-[9px] font-black text-slate-400 uppercase">UTR_ID</span><span className="text-[10px] font-mono text-indigo-600 truncate ml-2">{selectedTx?.utr}</span></div>
                        </div>
                     </div>
-                    <div className="flex gap-4">
-                       <button onClick={() => { setShowProofModal(false); setShowRejectModal(true); }} className="flex-1 py-4 bg-rose-50 text-rose-600 rounded-2xl text-[10px] font-black uppercase border border-rose-100">REJECT</button>
-                       <button onClick={() => { setTransactions(prev => prev.map(p => p.id === selectedTx.id ? { ...p, status: 'PAID' } : p)); setShowProofModal(false); }} className="flex-1 py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase shadow-xl hover:scale-105 transition-all">APPROVE</button>
+                    <div className="flex gap-4 mt-6 md:mt-0">
+                       <button onClick={() => { setShowProofModal(false); setShowRejectModal(true); }} className="flex-1 py-4 bg-rose-50 text-rose-600 rounded-xl md:rounded-2xl text-[10px] font-black uppercase border border-rose-100">REJECT</button>
+                       <button onClick={() => { setTransactions(prev => prev.map(p => p.id === selectedTx.id ? { ...p, status: 'PAID' } : p)); setShowProofModal(false); }} className="flex-1 py-4 bg-emerald-600 text-white rounded-xl md:rounded-2xl text-[10px] font-black uppercase shadow-xl hover:scale-105 transition-all">APPROVE</button>
                     </div>
                  </div>
               </div>
@@ -205,13 +203,13 @@ export default function VerifierDashboard() {
         </div>
       )}
 
-      {/* Reject Modal */}
+      {/* Reject Modal - Responsive */}
       {showRejectModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[210] p-4 text-slate-900">
-          <div className="bg-white max-w-sm w-full rounded-2xl p-8 shadow-2xl animate-in scale-in duration-200 border border-slate-200">
+          <div className="bg-white max-w-sm w-full rounded-2xl p-6 md:p-8 shadow-2xl animate-in scale-in duration-200 border border-slate-200">
              <div className="flex justify-between items-center mb-6"><h2 className="text-sm font-black uppercase tracking-widest text-slate-900 italic">Rejection Remark</h2><button onClick={() => setShowRejectModal(false)}><X size={20}/></button></div>
              <textarea value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} placeholder="Explain why..." className="w-full bg-slate-50 border border-slate-200 rounded-xl p-5 text-xs font-bold text-slate-700 outline-none h-32 resize-none transition-all" />
-             <div className="flex gap-4 mt-8"><button onClick={() => setShowRejectModal(false)} className="flex-1 py-3 text-[10px] font-bold text-slate-400 uppercase">Cancel</button><button onClick={() => { setTransactions(prev => prev.map(p => p.id === selectedTx.id ? { ...p, status: 'REJECTED', reason: rejectReason } : p)); setShowRejectModal(false); setRejectReason(''); }} className="flex-2 py-3 bg-rose-600 text-white rounded-xl text-[10px] font-bold uppercase shadow-lg shadow-rose-200" disabled={!rejectReason}>Confirm Reject</button></div>
+             <div className="flex flex-col sm:flex-row gap-4 mt-8"><button onClick={() => setShowRejectModal(false)} className="w-full sm:flex-1 py-3 text-[10px] font-bold text-slate-400 uppercase">Cancel</button><button onClick={() => { setTransactions(prev => prev.map(p => p.id === selectedTx.id ? { ...p, status: 'REJECTED', reason: rejectReason } : p)); setShowRejectModal(false); setRejectReason(''); }} className="w-full sm:flex-2 py-3 bg-rose-600 text-white rounded-xl text-[10px] font-bold uppercase shadow-lg shadow-rose-200" disabled={!rejectReason}>Confirm Reject</button></div>
           </div>
         </div>
       )}
