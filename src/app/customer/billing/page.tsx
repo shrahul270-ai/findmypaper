@@ -159,7 +159,7 @@ export default function BillingPage() {
              </div>
              
              <div className="bg-slate-50 w-48 h-48 md:w-56 md:h-56 rounded-[2.5rem] border-4 border-white shadow-2xl flex items-center justify-center mx-auto mb-8 overflow-hidden group relative">
-                <QrCode size={140} md:size={160} className="text-slate-900 group-hover:scale-110 transition-all duration-500" />
+                <QrCode size={140} className="text-slate-900 group-hover:scale-110 transition-all duration-500" />
              </div>
 
              <div className="bg-slate-900 p-5 md:p-6 rounded-[2rem] mb-8 md:mb-10 shadow-xl">
