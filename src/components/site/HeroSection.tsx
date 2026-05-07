@@ -2,14 +2,14 @@
 import React, { useRef, useEffect } from "react";
 
 export default function HeroSection() {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Auto slide for ad bar
     const container = sliderRef.current;
     if (!container) return;
 
-    let animationFrame;
+    let animationFrame: number;
     const autoSlide = () => {
       container.scrollLeft += 1; // 👈 LEFT to RIGHT
       if (container.scrollLeft >= container.scrollWidth / 2) container.scrollLeft = 0;

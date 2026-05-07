@@ -73,7 +73,7 @@ export default function BlogPage() {
         blog.subTitle.toLowerCase().includes(searchText.toLowerCase()))
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const message = `
@@ -346,7 +346,7 @@ export default function BlogPage() {
           />
           <textarea
             placeholder="Your Message"
-            rows="4"
+            rows={4}
             required
             value={formData.message}
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
