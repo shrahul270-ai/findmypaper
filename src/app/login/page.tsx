@@ -43,7 +43,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[400px] animate-in fade-in zoom-in duration-500">
+      <div className="w-full max-w-[400px]">
         
         {/* Brand */}
         <div className="text-center mb-10">
@@ -53,7 +53,7 @@ export default function AuthPage() {
           <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">PAPERFLOW<span className="text-indigo-600">_ERP</span></h1>
         </div>
 
-        <div className="bg-white border border-slate-100 p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.05)] relative overflow-hidden">
+        <div className="bg-white border border-slate-100 p-8 md:p-10 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.05)] relative">
           <div className="mb-10 text-center md:text-left">
             <h2 className="text-2xl font-black text-slate-900 italic uppercase tracking-tight">
               {view === 'LOGIN' ? 'Sign_In' : 'Verify_Identity'}
@@ -113,7 +113,7 @@ export default function AuthPage() {
             )}
 
             {view === 'OTP' && (
-              <div className="space-y-8 text-center animate-in slide-in-from-bottom-4 duration-500">
+              <div className="space-y-8 text-center">
                 <div className="flex justify-between gap-2">
                   {otp.map((digit, i) => (
                     <input 

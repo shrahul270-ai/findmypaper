@@ -32,8 +32,8 @@ export default function ProfilePage() {
           <div className="max-w-4xl space-y-8">
             
             {/* Simple User Info Card */}
-            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-8">
-               <div className="w-32 h-32 bg-indigo-50 rounded-[2.5rem] flex items-center justify-center text-indigo-600 shrink-0 border-4 border-white shadow-xl">
+            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-8">
+               <div className="w-32 h-32 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shrink-0 border-4 border-white shadow-xl">
                   <UserCircle2 size={64} />
                </div>
                <div className="flex-1 text-center md:text-left">
@@ -55,7 +55,7 @@ export default function ProfilePage() {
 
             {/* Account Details List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
+               <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm space-y-6">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <User size={14} /> CONTACT_INFORMATION
                   </h3>
@@ -71,7 +71,7 @@ export default function ProfilePage() {
                   </div>
                </div>
 
-               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
+               <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm space-y-6">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <MapPin size={14} /> DELIVERY_ADDRESS
                   </h3>
@@ -86,7 +86,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Quick Stats/Settings */}
-            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">ACCOUNT_PREFERENCES</h3>
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-5 bg-slate-50 rounded-2xl flex items-center justify-between hover:bg-indigo-50 transition-all cursor-pointer group">

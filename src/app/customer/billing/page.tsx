@@ -53,7 +53,7 @@ export default function BillingPage() {
             
             {/* Quick Pay Card - Responsive Stack */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-indigo-600 p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] text-white shadow-2xl shadow-indigo-100 relative overflow-hidden group">
+              <div className="bg-indigo-600 p-6 md:p-8 rounded-3xl md:rounded-2xl text-white shadow-2xl shadow-indigo-100 relative overflow-hidden group">
                 <div className="relative z-10">
                   <p className="text-[10px] font-black text-indigo-200 uppercase tracking-widest mb-6">CURRENT_OUTSTANDING</p>
                   <p className="text-3xl md:text-4xl font-black tracking-tighter mb-2 italic uppercase">₹275.00</p>
@@ -69,7 +69,7 @@ export default function BillingPage() {
                 <CreditCard className="absolute -right-12 -bottom-12 w-48 h-48 opacity-10 rotate-12 group-hover:rotate-0 transition-all duration-700" />
               </div>
 
-              <div className="bg-white p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-slate-100 shadow-sm">
+              <div className="bg-white p-6 md:p-8 rounded-3xl md:rounded-2xl border border-slate-100 shadow-sm">
                 <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">BILLING_WALKTHROUGH</h3>
                 <div className="space-y-4">
                    <div className="flex justify-between items-center py-4 border-b border-slate-50">
@@ -86,7 +86,7 @@ export default function BillingPage() {
 
             {/* Transaction History - Responsive Table */}
             <div className="lg:col-span-8">
-              <div className="bg-white rounded-3xl md:rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden p-6 md:p-8">
+              <div className="bg-white rounded-3xl md:rounded-2xl border border-slate-100 shadow-sm overflow-hidden p-6 md:p-8">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                   <div className="flex items-center gap-3">
                     <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl shadow-sm"><History size={20} /></div>
@@ -151,14 +151,14 @@ export default function BillingPage() {
       {/* UPI Scanner Modal - Responsive */}
       {showScannerModal && (
         <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[220] p-4 text-slate-900">
-          <div className="bg-white max-w-sm w-full rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 shadow-2xl relative animate-scale-in text-center border-4 border-white">
+          <div className="bg-white max-w-sm w-full rounded-2xl md:rounded-3xl p-8 md:p-10 shadow-2xl relative animate-scale-in text-center border-4 border-white">
              <button onClick={() => setShowScannerModal(false)} className="absolute top-6 right-6 text-slate-300 hover:text-slate-900 transition-colors"><X size={24} /></button>
              <div className="mb-6 border-b border-dashed pb-6">
                 <h2 className="text-xl md:text-2xl font-black uppercase italic tracking-tighter text-slate-900 leading-none mb-2">QUICK_SCAN_PAY</h2>
                 <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest italic">FINDMYPAPER OFFICIAL UPI</p>
              </div>
              
-             <div className="bg-slate-50 w-48 h-48 md:w-56 md:h-56 rounded-[2.5rem] border-4 border-white shadow-2xl flex items-center justify-center mx-auto mb-8 overflow-hidden group relative">
+             <div className="bg-slate-50 w-48 h-48 md:w-56 md:h-56 rounded-2xl border-4 border-white shadow-2xl flex items-center justify-center mx-auto mb-8 overflow-hidden group relative">
                 <QrCode size={140} className="text-slate-900 group-hover:scale-110 transition-all duration-500" />
              </div>
 
@@ -180,7 +180,7 @@ export default function BillingPage() {
       {/* Manual Payment Log Modal - Responsive */}
       {showLogModal && (
         <div className="fixed inset-0 bg-slate-900/90 backdrop-blur-md flex items-center justify-center z-[220] p-4 text-slate-900">
-          <div className="bg-white max-w-md w-full rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative animate-scale-in border-4 border-white overflow-y-auto max-h-[90vh]">
+          <div className="bg-white max-w-md w-full rounded-2xl p-6 md:p-10 shadow-2xl relative animate-scale-in border-4 border-white overflow-y-auto max-h-[90vh]">
             <button onClick={() => setShowLogModal(false)} className="absolute top-6 right-6 text-slate-300 hover:text-slate-900 transition-colors"><X size={28} /></button>
             <h2 className="text-xl md:text-2xl font-black text-slate-900 text-center mb-8 uppercase italic tracking-tighter">LOG_OFFLINE_PAYMENT</h2>
             
@@ -232,7 +232,7 @@ export default function BillingPage() {
                 
                 <button 
                   onClick={() => { alert("Payment logged!"); setShowLogModal(false); }}
-                  className="w-full bg-emerald-600 text-white py-5 md:py-6 rounded-[2.5rem] font-black text-[11px] md:text-[12px] tracking-[0.2em] uppercase shadow-2xl hover:scale-105 transition-all mt-4"
+                  className="w-full bg-emerald-600 text-white py-5 md:py-6 rounded-2xl font-black text-[11px] md:text-[12px] tracking-[0.2em] uppercase shadow-2xl hover:scale-105 transition-all mt-4"
                 >
                   CONFIRM_PAYMENT_LOG
                 </button>

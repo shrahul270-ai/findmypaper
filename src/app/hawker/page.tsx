@@ -79,7 +79,7 @@ export default function HawkerDashboard() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      {deliveries.filter(d => d.payment_status === 'REJECTED').map(item => (
-                       <div key={item.id} className="bg-white p-6 rounded-[2.5rem] border-2 border-rose-100 shadow-xl relative overflow-hidden group">
+                       <div key={item.id} className="bg-white p-6 rounded-2xl border-2 border-rose-100 shadow-xl relative overflow-hidden group">
                           <div className="flex justify-between items-start mb-4">
                              <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center"><User size={20} /></div>
@@ -109,7 +109,7 @@ export default function HawkerDashboard() {
                       <input type="text" placeholder="SEARCH..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-[9px] font-black uppercase shadow-sm outline-none" />
                    </div>
                 </div>
-                <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl overflow-hidden">
+                <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
                    <table className="w-full text-left">
                       <tbody className="divide-y divide-slate-50">
                          {deliveries.filter(d => d.payment_status === 'PENDING').map((item) => (
@@ -138,7 +138,7 @@ export default function HawkerDashboard() {
                 <h1 className="text-3xl font-black italic uppercase tracking-tighter text-slate-900">PAYMENT_HISTORY</h1>
                 <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 flex items-center gap-2 text-emerald-600 font-black text-[10px] uppercase italic tracking-widest"><History size={14}/> SYNCED_WITH_AGENT</div>
              </header>
-             <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl overflow-hidden p-6 space-y-4 text-slate-900">
+             <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-6 space-y-4 text-slate-900">
                 {deliveries.filter(d => d.payment_status === 'PAID').map((tx, i) => (
                    <div key={i} className="flex justify-between items-center p-6 bg-slate-50 rounded-[2rem] border border-slate-100 hover:border-indigo-600 transition-all">
                       <div className="flex items-center gap-4">
@@ -156,11 +156,11 @@ export default function HawkerDashboard() {
       {/* Online Modal */}
       {selectedOnline && (
         <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[110] p-4 text-slate-900">
-          <div className="bg-white max-w-sm w-full rounded-[3rem] p-10 shadow-2xl relative animate-scale-in text-center">
+          <div className="bg-white max-w-sm w-full rounded-3xl p-10 shadow-2xl relative animate-scale-in text-center">
              <button onClick={() => setSelectedOnline(null)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><XCircle size={24} /></button>
              <div className="mb-8 border-b border-dashed pb-6"><h2 className="text-xl font-black uppercase italic tracking-tighter leading-none mb-2">ONLINE_TERMINAL</h2><p className="text-[11px] font-black text-indigo-600 uppercase tracking-widest">{selectedOnline.name}</p></div>
              <div className="animate-in fade-in zoom-in duration-500 mb-10 flex flex-col items-center"><div className="bg-slate-50 w-48 h-48 rounded-[2rem] border-4 border-white shadow-2xl flex items-center justify-center"><QrCode size={110} className="text-slate-800" /></div><p className="mt-5 text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] animate-pulse">SCAN_AGENT_QR_CODE</p></div>
-             <div className="bg-slate-900 p-8 rounded-[2.5rem] mb-10 shadow-xl text-center"><p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">VERIFY_BILL_AMOUNT</p><div className="flex items-center justify-center gap-3"><span className="text-3xl font-black text-indigo-500 italic">₹</span><input type="number" value={editableAmount} onChange={(e) => setEditableAmount(e.target.value)} className="bg-transparent text-3xl font-black text-white italic outline-none w-24 tracking-tighter" /></div></div>
+             <div className="bg-slate-900 p-8 rounded-2xl mb-10 shadow-xl text-center"><p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">VERIFY_BILL_AMOUNT</p><div className="flex items-center justify-center gap-3"><span className="text-3xl font-black text-indigo-500 italic">₹</span><input type="number" value={editableAmount} onChange={(e) => setEditableAmount(e.target.value)} className="bg-transparent text-3xl font-black text-white italic outline-none w-24 tracking-tighter" /></div></div>
              <button onClick={confirmOnlinePayment} className="w-full bg-indigo-600 text-white py-5 rounded-[2rem] font-black text-[11px] tracking-[0.2em] uppercase shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"><ShieldCheck size={18} /> CONFIRM_&_RESUBMIT</button>
           </div>
         </div>

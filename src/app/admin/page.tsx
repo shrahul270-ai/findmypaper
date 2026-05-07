@@ -55,7 +55,7 @@ export default function AdminDashboard() {
 
         {/* Global Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+           <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
               <div className="flex justify-between items-start mb-4">
                  <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center"><DollarSign size={20} /></div>
                  <span className="text-[8px] font-black text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full">+18%</span>
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">TOTAL_REVENUE</p>
               <p className="text-3xl font-black text-slate-900 italic tracking-tighter">₹4,85,200</p>
            </div>
-           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+           <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
               <div className="flex justify-between items-start mb-4">
                  <div className="w-10 h-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center"><AlertCircle size={20} /></div>
                  <span className="text-[8px] font-black text-rose-500 bg-rose-50 px-3 py-1 rounded-full">ACTION REQ</span>
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">REJECTED_BILLS</p>
               <p className="text-3xl font-black text-slate-900 italic tracking-tighter">42</p>
            </div>
-           <div className="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden">
+           <div className="bg-slate-900 p-8 rounded-2xl text-white shadow-xl relative overflow-hidden">
               <div className="relative z-10">
                  <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">ACTIVE_HAWKERS</p>
                  <p className="text-3xl font-black italic tracking-tighter text-emerald-400">128</p>
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Global Transaction History (PhonePe Style) */}
-        <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl overflow-hidden p-8">
+        <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-8">
            <div className="flex justify-between items-center mb-8">
               <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter flex items-center gap-2"><History size={20} className="text-indigo-600" /> GLOBAL_TRANSACTION_LOG</h2>
               <button className="text-[9px] font-black text-indigo-600 uppercase tracking-widest border-b-2 border-indigo-600 pb-1">DOWNLOAD_EXCEL</button>

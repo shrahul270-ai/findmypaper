@@ -75,7 +75,7 @@ export default function AgentAuditDashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
            {/* Left: Pending Approvals - Responsive List */}
-           <div className="bg-white rounded-3xl md:rounded-[2.5rem] border border-slate-200 shadow-sm p-6 md:p-8">
+           <div className="bg-white rounded-3xl md:rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
               <h2 className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest italic mb-6 md:mb-8 border-b pb-4">Awaiting_Your_Approval</h2>
               <div className="space-y-4">
                  {transactions.filter(t => t.status === 'PENDING').map(tx => (
@@ -103,7 +103,7 @@ export default function AgentAuditDashboard() {
            </div>
 
            {/* Right: Rejection History - Responsive List */}
-           <div className="bg-slate-50 rounded-3xl md:rounded-[2.5rem] border border-slate-200 p-6 md:p-8 shadow-inner">
+           <div className="bg-slate-50 rounded-3xl md:rounded-2xl border border-slate-200 p-6 md:p-8 shadow-inner">
               <h2 className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest italic mb-6 md:mb-8 border-b pb-4 text-rose-500">Recently_Rejected_Logs</h2>
               <div className="space-y-4 opacity-75">
                  {transactions.filter(t => t.status === 'REJECTED').map(tx => (

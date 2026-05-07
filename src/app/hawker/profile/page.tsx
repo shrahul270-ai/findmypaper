@@ -32,8 +32,8 @@ export default function HawkerProfilePage() {
           <div className="max-w-4xl space-y-8">
             
             {/* Hawker Header Info */}
-            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-8">
-               <div className="w-32 h-32 bg-emerald-50 rounded-[2.5rem] flex items-center justify-center text-emerald-600 shrink-0 border-4 border-white shadow-xl relative">
+            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row items-center gap-8">
+               <div className="w-32 h-32 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shrink-0 border-4 border-white shadow-xl relative">
                   <UserCircle2 size={64} />
                   <div className="absolute -bottom-2 -right-2 bg-emerald-500 text-white p-2 rounded-xl shadow-lg border-2 border-white">
                     <Bike size={16} />
@@ -61,7 +61,7 @@ export default function HawkerProfilePage() {
 
             {/* Account Details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
+               <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm space-y-6">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <Phone size={14} /> PARTNER_CONTACT
                   </h3>
@@ -77,7 +77,7 @@ export default function HawkerProfilePage() {
                   </div>
                </div>
 
-               <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
+               <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm space-y-6">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <MapPin size={14} /> DISTRIBUTION_AREA
                   </h3>
@@ -92,7 +92,7 @@ export default function HawkerProfilePage() {
             </div>
 
             {/* Performance & Payout Settings */}
-            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">SETTLEMENT_PREFERENCES</h3>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-6 bg-slate-50 rounded-3xl flex items-center justify-between group cursor-pointer hover:bg-indigo-50 transition-all border border-slate-100">

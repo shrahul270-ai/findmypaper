@@ -64,7 +64,7 @@ export default function CustomerMarketplace() {
         <div className="flex-1 relative overflow-hidden mask-fade-y">
           <div className="animate-vertical-scroll space-y-4 py-6">
             {[...filteredCatalog, ...filteredCatalog].map((item, i) => (
-              <div key={`${item.id}-${i}`} className="bg-white p-6 rounded-[2.5rem] border border-slate-100 flex flex-col md:flex-row items-center justify-between group hover:border-indigo-600 transition-all duration-500">
+              <div key={`${item.id}-${i}`} className="bg-white p-6 rounded-2xl border border-slate-100 flex flex-col md:flex-row items-center justify-between group hover:border-indigo-600 transition-all duration-500">
                 <div className="flex items-center gap-8 w-full md:w-auto">
                   <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center transition-all", item.type === 'NEWSPAPER' ? "bg-indigo-50 text-indigo-600" : "bg-emerald-50 text-emerald-600")}>
                     {item.type === 'NEWSPAPER' ? <Newspaper size={32} /> : <BookOpen size={32} />}

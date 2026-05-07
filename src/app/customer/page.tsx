@@ -5,13 +5,16 @@ import Sidebar from '@/components/layout/Sidebar';
 import { 
   User, Newspaper, Clock, MapPin, CheckCircle2, Phone, Building2, 
   Bike, MessageSquare, Send, X, BookOpen, Calendar, ArrowRight, 
-  ShieldCheck, Wallet, AlertCircle, Smartphone, Info, UserCircle2
+  ShieldCheck, Wallet, AlertCircle, Smartphone, Info, UserCircle2,
+  QrCode, MessageCircle, AlertTriangle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { GlobalAlert, TopAdBar } from '@/components/ui/Promotions';
 
 export default function CustomerDashboard() {
   const [showPauseModal, setShowPauseModal] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [complaintSent, setComplaintSent] = useState(false);
 
   const ads = [
     { tag: 'SCHOOL_AD', title: 'ST. STEPHENS ADMISSIONS OPEN - 20% OFF ON NEW REGISTRATION' },
@@ -26,6 +29,18 @@ export default function CustomerDashboard() {
   ];
 
   const leaveDays = [5, 12, 18]; 
+
+  const handlePauseToggle = () => {
+    const action = !isPaused ? 'PAUSE' : 'RESUME';
+    if(confirm(`Are you sure you want to ${action} delivery? Pro-rata adjustments will be applied.`)) {
+      setIsPaused(!isPaused);
+    }
+  };
+
+  const raiseComplaint = () => {
+    setComplaintSent(true);
+    setTimeout(() => setComplaintSent(false), 3000);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -57,76 +72,103 @@ export default function CustomerDashboard() {
                     <Wallet size={24} />
                   </div>
                </div>
-               <div className="flex items-center gap-2 bg-amber-50 text-amber-700 px-4 py-2 rounded-xl border border-amber-100">
-                  <Info size={12} />
-                  <p className="text-[9px] font-bold uppercase tracking-tight">Note: Advanced payment agle month ke bill mein adjust ho jayega.</p>
-               </div>
             </div>
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8 space-y-8">
               
-              <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group">
-                <div className="relative z-10">
-                  <div className="flex items-center gap-2 mb-6">
-                    <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl"><Newspaper size={18} /></div>
-                    <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">ACTIVE_SERVICES</h2>
+              {/* Holiday Mode Card */}
+              <div className={cn(
+                "p-8 rounded-2xl border transition-all duration-500 flex flex-col md:flex-row items-center justify-between gap-6",
+                isPaused ? "bg-amber-50 border-amber-200" : "bg-white border-slate-100 shadow-sm"
+              )}>
+                <div className="flex items-center gap-6">
+                  <div className={cn("w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-lg", isPaused ? "bg-amber-500 text-white" : "bg-indigo-600 text-white")}>
+                    <Calendar size={32} />
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    {activeServices.map((s, i) => (
-                      <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <div className="flex items-center gap-3">
-                          <CheckCircle2 size={16} className="text-emerald-500" />
-                          <p className="text-sm font-black text-slate-800">{s.name}</p>
-                        </div>
-                        <p className="text-xs font-bold text-slate-400 italic">₹{s.price}/mo</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center bg-indigo-600 p-5 rounded-3xl text-white">
-                    <div>
-                      <p className="text-[9px] font-black text-indigo-200 uppercase tracking-widest">TOTAL_MONTHLY_BILL</p>
-                      <p className="text-2xl font-black tracking-tighter">₹275.00</p>
-                    </div>
-                    <button className="bg-white text-indigo-600 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg">VIEW_DETAILS</button>
+                  <div>
+                    <h2 className="text-xl font-black text-slate-900 italic uppercase tracking-tighter">HOLIDAY_MODE</h2>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{isPaused ? "DELIVERY_PAUSED_UNTIL_MANUAL_RESUME" : "PAUSE_DELIVERY_FOR_PRO_RATA_DISCOUNT"}</p>
                   </div>
                 </div>
+                <button 
+                  onClick={handlePauseToggle}
+                  className={cn(
+                    "px-8 py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase transition-all shadow-xl active:scale-95",
+                    isPaused ? "bg-emerald-600 text-white hover:bg-slate-900" : "bg-slate-900 text-white hover:bg-amber-600"
+                  )}
+                >
+                  {isPaused ? "RESUME_DELIVERY" : "ACTIVATE_HOLIDAY"}
+                </button>
               </div>
 
-              <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+              {/* Delivery Calendar */}
+              <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                 <div className="flex justify-between items-center mb-8">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl"><Calendar size={18} /></div>
-                    <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">DELIVERY_REPORT: MAY</h2>
+                    <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl"><Clock size={18} /></div>
+                    <h2 className="text-xs font-black tracking-widest uppercase text-slate-400">DELIVERY_TRACKER: MAY</h2>
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 hidden md:flex">
                     <div className="flex items-center gap-2"><div className="w-3 h-3 bg-emerald-500 rounded-full"></div><span className="text-[9px] font-black text-slate-400 uppercase">DELIVERED</span></div>
-                    <div className="flex items-center gap-2"><div className="w-3 h-3 bg-rose-500 rounded-full"></div><span className="text-[9px] font-black text-slate-400 uppercase">ABSENT/LEAVE</span></div>
+                    <div className="flex items-center gap-2"><div className="w-3 h-3 bg-rose-500 rounded-full"></div><span className="text-[9px] font-black text-slate-400 uppercase">MISSED</span></div>
+                    <div className="flex items-center gap-2"><div className="w-3 h-3 bg-amber-500 rounded-full"></div><span className="text-[9px] font-black text-slate-400 uppercase">PAUSED</span></div>
                   </div>
                 </div>
                 <div className="grid grid-cols-7 md:grid-cols-10 gap-2">
                   {[...Array(31)].map((_, i) => {
                     const isLeave = leaveDays.includes(i + 1);
                     const isPast = i + 1 < 12;
+                    const dayIsPaused = isPaused && i + 1 >= 11;
                     return (
                       <div key={i} className={cn(
-                        "h-14 flex flex-col items-center justify-center rounded-xl text-[10px] font-black border transition-all",
-                        isLeave ? "bg-rose-50 text-rose-600 border-rose-100 shadow-sm" : 
+                        "h-14 flex flex-col items-center justify-center rounded-xl text-[10px] font-black border transition-all relative overflow-hidden",
+                        dayIsPaused ? "bg-amber-50 text-amber-600 border-amber-100" :
+                        isLeave ? "bg-rose-50 text-rose-600 border-rose-100" : 
                         isPast ? "bg-emerald-50 text-emerald-600 border-emerald-100" : 
                         "bg-slate-50/50 text-slate-400 border-slate-50"
                       )}>
                         <span>{i + 1}</span>
-                        {isLeave && <span className="text-[7px] mt-1 font-black uppercase">ABSENT</span>}
+                        {dayIsPaused && <div className="absolute inset-0 flex items-center justify-center bg-amber-500/10"><X size={12} /></div>}
                       </div>
                     );
                   })}
                 </div>
               </div>
+
+              {/* Raise Complaint & Services */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden group">
+                    <div className="relative z-10">
+                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2"><AlertTriangle size={14} className="text-rose-500" /> RAISING_COMPLAINT</h3>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase leading-relaxed mb-6">Paper not received or wet? Notify your agent instantly.</p>
+                      <button 
+                        onClick={raiseComplaint}
+                        disabled={complaintSent}
+                        className={cn(
+                          "w-full py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase transition-all shadow-lg",
+                          complaintSent ? "bg-emerald-100 text-emerald-600" : "bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white"
+                        )}
+                      >
+                        {complaintSent ? "COMPLAINT_LOGGED_✓" : "PAPER_NOT_RECEIVED"}
+                      </button>
+                    </div>
+                 </div>
+
+                 <div className="bg-indigo-600 p-8 rounded-2xl text-white shadow-xl relative overflow-hidden group">
+                    <div className="relative z-10">
+                       <h3 className="text-xs font-black text-indigo-200 uppercase tracking-widest mb-6 flex items-center gap-2"><QrCode size={14} /> INSTANT_PAY</h3>
+                       <p className="text-[10px] font-bold text-indigo-100 uppercase leading-relaxed mb-6 italic tracking-tight">Direct transfer to your official Agent/Depot wallet via UPI.</p>
+                       <button className="w-full bg-white text-indigo-600 py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase shadow-xl hover:bg-slate-900 hover:text-white transition-all">SCAN_&_PAY_OFFICIAL</button>
+                    </div>
+                    <QrCode className="absolute -right-10 -bottom-10 w-40 h-40 opacity-10 rotate-12" />
+                 </div>
+              </div>
             </div>
 
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+              <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                 <h2 className="text-[10px] font-black tracking-widest uppercase text-slate-400 mb-8 flex items-center gap-2">
                   <div className="w-4 h-0.5 bg-slate-200"></div> YOUR_SERVICE_SQUAD
                 </h2>
@@ -163,50 +205,38 @@ export default function CustomerDashboard() {
                             <a href="tel:9876543211" className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 hover:text-emerald-600 transition-colors">
                               <Phone size={10} /> +91 98765 43211
                             </a>
-                            <p className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
-                              <MapPin size={10} /> Sector 4 Area
-                            </p>
                           </div>
                         </div>
+                        <button onClick={() => window.open(`https://wa.me/919876543211`, '_blank')} className="p-3 bg-white text-emerald-600 rounded-xl shadow-sm border border-slate-100 hover:scale-110 transition-all">
+                           <MessageCircle size={20} />
+                        </button>
                       </div>
                    </div>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4">
-                <button 
-                  onClick={() => setShowPauseModal(true)}
-                  className="w-full bg-slate-900 text-white py-5 rounded-[2rem] font-black text-xs tracking-[0.2em] uppercase shadow-2xl hover:bg-indigo-600 transition-all"
-                >
-                  REQUEST_LEAVE
-                </button>
+              <div className="bg-slate-900 p-8 rounded-2xl text-white shadow-xl relative overflow-hidden group">
+                 <div className="relative z-10">
+                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-4 italic">MY_SUBSCRIPTIONS</p>
+                    <div className="space-y-4">
+                       {activeServices.map((s, i) => (
+                         <div key={i} className="flex justify-between items-center py-2 border-b border-white/10 last:border-0">
+                            <span className="text-xs font-black uppercase italic">{s.name}</span>
+                            <span className="text-xs font-black text-indigo-400">₹{s.price}</span>
+                         </div>
+                       ))}
+                    </div>
+                    <button className="w-full mt-6 py-4 bg-white/10 hover:bg-white/20 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border border-white/10 flex items-center justify-center gap-2">
+                       MANAGE_PLAN <ArrowRight size={14} />
+                    </button>
+                 </div>
+                 <Newspaper className="absolute -right-6 -bottom-6 w-32 h-32 opacity-10 rotate-12" />
               </div>
             </div>
 
           </div>
         </main>
       </div>
-
-      {showPauseModal && (
-        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
-          <div className="bg-white max-w-md w-full rounded-[2.5rem] p-10 shadow-2xl relative animate-scale-in">
-            <button onClick={() => setShowPauseModal(false)} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors"><X size={24} /></button>
-            <h2 className="text-2xl font-black text-slate-900 text-center mb-8 uppercase italic tracking-tighter">LEAVE_REQUEST</h2>
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <p className="text-[9px] font-black text-slate-400 uppercase px-2">FROM_DATE</p>
-                <input type="date" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-[10px] font-black outline-none" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-[9px] font-black text-slate-400 uppercase px-2">TO_DATE</p>
-                <input type="date" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-[10px] font-black outline-none" />
-              </div>
-              <textarea placeholder="Reason for leave..." className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-[10px] font-black min-h-[100px] outline-none"></textarea>
-              <button className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase shadow-xl">SUBMIT_REQUEST</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

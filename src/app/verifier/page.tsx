@@ -179,7 +179,7 @@ export default function VerifierDashboard() {
       {/* Proof Modal - Responsive */}
       {showProofModal && (
         <div className="fixed inset-0 bg-slate-900/95 backdrop-blur-xl flex items-center justify-center z-[200] p-4 text-slate-900 overflow-y-auto">
-           <div className="bg-white max-w-2xl w-full rounded-2xl md:rounded-[3rem] p-6 md:p-8 shadow-2xl relative animate-in zoom-in duration-300 my-auto">
+           <div className="bg-white max-w-2xl w-full rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl relative animate-in zoom-in duration-300 my-auto">
               <button onClick={() => setShowProofModal(false)} className="absolute top-4 right-4 md:top-8 md:right-8 text-slate-300 hover:text-slate-900 transition-colors"><XCircle size={32}/></button>
               <div className="flex flex-col md:flex-row gap-6 md:gap-8">
                  <div className="w-full md:flex-1 bg-slate-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-inner flex items-center justify-center min-h-[300px] md:min-h-[400px]">
